@@ -1,22 +1,36 @@
-#include <stdio>
-#include <pieces>
+#include <iostream>
+#include "pieces.cpp"
+#include "gameboard.cpp"
 #include <string>
 
-bool gameOver(){
+using namespace std;
 
+
+bool gameOver(){
+	static int count = 0;
+
+	count++;
+	cout << "turn: " << count << endl;
+	if (count < 50) { // 50 turns for testing
+		return false;
+	}
+
+	return true;
 
 }
 
-void play(Gameboard board){
-	String input 
+void play(Gameboard* board){
+	std::string src, dst;
 	int current_player = 0; 
 
 
 
 	printBoard (board);
 	cout << "Welcome to Chess." << endl;
-	while (gameOver()){
-		string
+	while ( !gameOver() ){
+
+		cin >> src >> dst;
+		printBoard (board);
 
 
 	}
@@ -28,7 +42,7 @@ void play(Gameboard board){
 
 int main(){
 
-	Gameboard board = new Gameboard();
+	Gameboard* board = new Gameboard();
 	play(board);
 
 

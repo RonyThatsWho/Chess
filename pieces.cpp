@@ -1,59 +1,89 @@
+
+#ifndef PIECES_CPP
+#define PIECES_CPP
+
+
+
 #include <string>
- 
+
+using namespace std;
 
 
 class Piece {
 
 	int color;
-	String description;
+	string description;
 	pair<int,int> position;
 
 
-	void available_moves();
-	virtual draw_piece();
-	virtual check_path(pair<int,int> src, pair<int,int> dst);
-	virtual void move_to();
+	// void available_moves();
+	// virtual void draw_piece();
+	// virtual void check_path(pair<int,int>, pair<int,int>);
+	// virtual void move_to();
 
-	Piece (int in_color){
-		color = in_colors;
+public:
+	Piece (int val): color(val), description("pwn") {}
+	
+	friend ostream & operator << (ostream &out, const Piece &piece);
 
-	}
 
-}
+};
+
+ostream & operator << (ostream &out, const Piece &piece){
+
+	out << piece.description; 
+
+	return out;
+};
+
 
 //Pawn Class
-class Pawn: Piece{
+class Pawn: public Piece{
 	int moved;
+
+public:
+	Pawn(int val): Piece(val){}
 
 	int has_moved(){
 		return moved;
 	}
 
+};
 
-}
 
-class King: Piece{
+
+//King
+class King: public Piece{
 	int moved;
+
+public:
+	King(int val): Piece(val){};
 
 	int has_moved(){
 		return moved;
 	}
 
+	void castle(){}
 
-	castle(){
-
-
-	}
-
-}
-
-class Queen: Piece{
+};
 
 
-}
+// Queen
+class Queen: public Piece{
 
-class Rook: Piece{
+public:
+	Queen(int val): Piece(val){};
+
+};
+
+
+
+//Rook
+class Rook: public Piece{
 	int moved;
+
+public:
+	Rook(int val): Piece(val){};
 
 	int has_moved(){
 		return moved;
@@ -63,12 +93,25 @@ class Rook: Piece{
 
 	}
 
-}
+};
 
-class Knight: Piece{
+//Knight
+class Knight: public Piece{
 
-}
+public:
+	Knight(int val): Piece(val){};
 
-class Bishop: Piece{
+};
 
-}
+
+
+//Bishop
+class Bishop: public Piece{
+
+public:
+	Bishop(int val): Piece(val){};
+
+};
+
+
+#endif
