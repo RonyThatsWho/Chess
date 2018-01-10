@@ -24,9 +24,9 @@ void play(Gameboard* board){
 	int current_player = 0; 
 
 
-
+	cout << "Welcome to Chess." << endl << endl;
 	printBoard (board);
-	cout << "Welcome to Chess." << endl;
+	
 	while ( !gameOver() ){
 
 		cin >> src >> dst;

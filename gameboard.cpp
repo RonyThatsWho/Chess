@@ -58,6 +58,10 @@ public:
 		if (board[i][j] != nullptr){
 			cout << *(board[i][j]);
 		}
+		else if ((i+j)%2 == 0 ){
+			cout << "##";
+		}
+		else cout << "  ";
 	}
 
 };
@@ -66,13 +70,15 @@ public:
 
 void printBoard(Gameboard* board) {
 
-	for (int i = 0; i < 8; i++){
+	for (int i = 7; i > -1; i--){
 		for (int j = 0; j < 8; j++){
 
 			board->print(i,j);
 			if (i < 8) (cout << " ");
 
 		}
-		cout << endl;
+
+		cout << i+1 << endl;
 	}
+	cout << " a  b  c  d  e  f  g  h" << endl;
 }
