@@ -17,8 +17,8 @@ public:
 		board[0][0] = new Rook(black);
 		board[0][1] = new Knight(black);
 		board[0][2] = new Bishop(black);
-		board[0][3] = new King(black);
-		board[0][4] = new Queen(black);
+		board[0][3] = new Queen(black);
+		board[0][4] = new King(black);
 		board[0][5] = new Bishop(black);
 		board[0][6] = new Knight(black);
 		board[0][7] = new Rook(black);
@@ -37,8 +37,8 @@ public:
 		board[7][0] = new Rook(white);
 		board[7][1] = new Knight(white);
 		board[7][2] = new Bishop(white);
-		board[7][3] = new King(white);
-		board[7][4] = new Queen(white);
+		board[7][3] = new Queen(white);
+		board[7][4] = new King(white);
 		board[7][5] = new Bishop(white);
 		board[7][6] = new Knight(white);
 		board[7][7] = new Rook(white);
@@ -80,5 +80,5 @@ void printBoard(Gameboard* board) {
 
 		cout << i+1 << endl;
 	}
-	cout << " a  b  c  d  e  f  g  h" << endl;
+	cout << " a  b  c  d  e  f  g  h" << endl << endl;;
 }
