@@ -5,6 +5,9 @@
 
 using namespace std;
 
+bool white_resigns = false;
+bool black_resigns = false;
+
 
 bool gameOver(){
 	static int count = 0;
@@ -29,7 +32,20 @@ void play(Gameboard* board){
 	
 	while ( !gameOver() ){
 
-		cin >> src >> dst;
+		//Take in input, need 3rd for promoting 
+		cin >> src >> dst >> prmt;
+
+		//
+
+		//Check if valid move.
+		
+		/* 1. Needs to be valid source (player owned piece)
+		   2. Destination not occupied by own piece
+		*  3. Path is clear
+
+		*
+
+		*/
 		printBoard (board);
 
 
