@@ -11,6 +11,20 @@ bool white_resigns = false;
 bool black_resigns = false;
 
 
+
+
+void parseInput(string input){
+
+
+
+}
+
+bool validInput(string src, string dst, int turn){
+
+ return true;
+}
+
+
 bool gameOver(){
 
 	//Check if game over, if not over process nextTurn;
@@ -59,6 +73,23 @@ void play(Gameboard* board){
 		if (tokens.size() > 3){ cout << "Incorrect Usage." << endl;}
 		else if (tokens.size() == 2){
 			
+
+		//Check if input valid, and then convert to positions
+			if( (tokens[0].length() == 2) && (tokens[0].length() == 2) ){
+				cout << "Both Good " << endl;
+
+
+
+
+
+			}
+			else { //invalid input
+
+				cout << "invalid" << endl;
+			}
+
+
+
 		//Check if valid move.
 		
 		/* 1. Needs to be valid source (player owned piece)

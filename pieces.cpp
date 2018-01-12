@@ -16,11 +16,12 @@ protected:
 	string name;
 	string type;
 	pair<int,int> position;
+	//vector<pair<int,int> > a;
 
 
 	// void available_moves();
 	// virtual void draw_piece();
-	// virtual void check_path(pair<int,int>, pair<int,int>);
+	// virtual bool clear_path(pair<int,int>, pair<int,int>);
 	// virtual void move_to();
 
 public:
