@@ -7,6 +7,8 @@
 class Gameboard {
 	Piece* board[8][8];
 	int turn;
+	bool whites_turn = true;
+
 
 public:
 	Gameboard(){
@@ -62,6 +64,17 @@ public:
 			cout << "##";
 		}
 		else cout << "  ";
+	}
+
+	void changePlayer() { whites_turn = !whites_turn; }
+
+	bool tryMove(int file0, int rank0, int file1, int rank1){
+		cout << "trying move" << endl;
+		if (board[file0][rank0]->getColor() && !whites_turn){
+			cout << "player owned piece" << endl;
+			return true;
+		}
+		return false;
 	}
 
 };

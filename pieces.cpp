@@ -20,12 +20,15 @@ protected:
 
 
 	// void available_moves();
+	// 
 	// virtual void draw_piece();
 	// virtual bool clear_path(pair<int,int>, pair<int,int>);
+	// virtual validDestination(pair<int,int>);
 	// virtual void move_to();
 
 public:
 	Piece (int val): color(val) {setName();}
+	int getColor() {return color;}
 	
 	friend ostream & operator << (ostream &out, const Piece &piece);
 	void setName (){

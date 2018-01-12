@@ -13,10 +13,23 @@ bool black_resigns = false;
 
 
 
-void parseInput(string input){
+bool parseInput(string input, int &file, int &rank ){
+	char f = input[0];
+	char r = input[1];
 
+	cout << f << " " << r << endl;
 
+	if ( ('a' <= f) && (f <= 'h') ){
+		file = f - 'a';
+	}
+	else return false;
 
+	if ( ('0' < r) && (r < '8') ){
+		rank = r - '1';
+	}
+	else return false;
+
+	return true;
 }
 
 bool validInput(string src, string dst, int turn){
@@ -58,26 +71,36 @@ void play(Gameboard* board){
 	
 	while ( !gameOver() ){
 
-		//Take in input, need 3rd for promoting 
-		//cin >> src >> dst >> prmt;
-
+		//Take in input, Strings pushed to vector
 		getline(cin, input);
-		//cout << input << endl;
 		istringstream iss(input);
-
 		while (iss >> token)tokens.push_back(token);
-		//cout << "tokens: " << tokens.size() << endl;
 
 		
 
 		if (tokens.size() > 3){ cout << "Incorrect Usage." << endl;}
 		else if (tokens.size() == 2){
 			
-
 		//Check if input valid, and then convert to positions
 			if( (tokens[0].length() == 2) && (tokens[0].length() == 2) ){
 				cout << "Both Good " << endl;
+				//cout <<  tokens[0][0]  << "   " << tokens[0][1] << endl;
 
+				int file0, rank0, file1, rank1;
+				if (parseInput(tokens[0], file0, rank0) && parseInput(tokens[1], file1, rank1)){
+					board->tryMove(file0,rank0,file1,rank1);
+
+				}
+				
+
+				//input needs to be in range
+
+			//Check if valid move.
+			/*  1. Needs to be valid source (player owned piece)
+			 *  2. Destination not occupied by own piece
+			 *  3. Path is clear
+			 *
+			 */
 
 
 
@@ -88,17 +111,6 @@ void play(Gameboard* board){
 				cout << "invalid" << endl;
 			}
 
-
-
-		//Check if valid move.
-		
-		/* 1. Needs to be valid source (player owned piece)
-		   2. Destination not occupied by own piece
-		*  3. Path is clear
-
-		*
-
-		*/
 
 		}
 		//Player has quit
@@ -125,7 +137,6 @@ int main(){
 
 	Gameboard* board = new Gameboard();
 	play(board);
-
 
 	return 0;
 } 
