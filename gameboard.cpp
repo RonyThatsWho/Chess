@@ -7,52 +7,53 @@
 class Gameboard {
 	Piece* board[8][8];
 	int turn;
-	bool whites_turn = true;
+	bool whites_turn;
 
 
 public:
 	Gameboard(){
 		turn = 0;
+		whites_turn = true;
 
 
 		//Spawn Black Pieces
-		board[7][0] = new Rook(black);
-		board[7][1] = new Knight(black);
-		board[7][2] = new Bishop(black);
-		board[7][3] = new Queen(black);
-		board[7][4] = new King(black);
-		board[7][5] = new Bishop(black);
-		board[7][6] = new Knight(black);
+		board[0][7] = new Rook(black);
+		board[1][7] = new Knight(black);
+		board[2][7] = new Bishop(black);
+		board[3][7] = new Queen(black);
+		board[4][7] = new King(black);
+		board[5][7] = new Bishop(black);
+		board[6][7] = new Knight(black);
 		board[7][7] = new Rook(black);
 		
-		board[6][0] = new Pawn(black);
-		board[6][1] = new Pawn(black);
-		board[6][2] = new Pawn(black);
-		board[6][3] = new Pawn(black);
-		board[6][4] = new Pawn(black);
-		board[6][5] = new Pawn(black);
+		board[0][6] = new Pawn(black);
+		board[1][6] = new Pawn(black);
+		board[2][6] = new Pawn(black);
+		board[3][6] = new Pawn(black);
+		board[4][6] = new Pawn(black);
+		board[5][6] = new Pawn(black);
 		board[6][6] = new Pawn(black);
-		board[6][7] = new Pawn(black);
+		board[7][6] = new Pawn(black);
 
 
 		//Spawn White Pieces
 		board[0][0] = new Rook(white);
-		board[0][1] = new Knight(white);
-		board[0][2] = new Bishop(white);
-		board[0][3] = new Queen(white);
-		board[0][4] = new King(white);
-		board[0][5] = new Bishop(white);
-		board[0][6] = new Knight(white);
-		board[0][7] = new Rook(white);
+		board[1][0] = new Knight(white);
+		board[2][0] = new Bishop(white);
+		board[3][0] = new Queen(white);
+		board[4][0] = new King(white);
+		board[5][0] = new Bishop(white);
+		board[6][0] = new Knight(white);
+		board[7][0] = new Rook(white);
 
-		board[1][0] = new Pawn(white);
+		board[0][1] = new Pawn(white);
 		board[1][1] = new Pawn(white);
-		board[1][2] = new Pawn(white);
-		board[1][3] = new Pawn(white);
-		board[1][4] = new Pawn(white);
-		board[1][5] = new Pawn(white);
-		board[1][6] = new Pawn(white);
-		board[1][7] = new Pawn(white);
+		board[2][1] = new Pawn(white);
+		board[3][1] = new Pawn(white);
+		board[4][1] = new Pawn(white);
+		board[5][1] = new Pawn(white);
+		board[6][1] = new Pawn(white);
+		board[7][1] = new Pawn(white);
 
 	}
 
@@ -70,8 +71,15 @@ public:
 
 	bool tryMove(int file0, int rank0, int file1, int rank1){
 		cout << "fileRank on Board" << endl;
-		if (board[file0][rank0]->isWhite() && whites_turn){
-			cout << "White Owned Piece" << endl;
+		Piece* src = board[file0][rank0];
+		if (src == nullptr){ return false; }
+		cout << "piece to move: " << *src << endl;
+		Piece* dst = board[file1][rank1];
+		if (src->isWhite() && whites_turn){
+			cout << "Player's Own Piece: " << src->isWhite() << endl;
+			if (src->move_to(dst, whites_turn)){
+				return true;
+			}
 
 
 
@@ -87,15 +95,15 @@ public:
 
 void printBoard(Gameboard* board) {
 
-	for (int i = 7; i > -1; i--){
-		for (int j = 0; j < 8; j++){
+	for (int j = 7; j > -1; j--){
+		for (int i = 0; i < 8; i++){
 
 			board->print(i,j);
 			if (i < 8) (cout << " ");
 
 		}
 
-		cout << i+1 << endl;
+		cout << j+1 << endl;
 	}
 	cout << " a  b  c  d  e  f  g  h" << endl << endl;;
 }

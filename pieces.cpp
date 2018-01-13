@@ -25,7 +25,7 @@ protected:
 	// virtual void draw_piece();
 	// virtual bool clear_path(pair<int,int>, pair<int,int>);
 	// virtual validDestination(pair<int,int>);
-	// virtual void move_to();
+	 
 
 public:
 	Piece (bool val): m_isWhite(val) { setName(); }
@@ -42,6 +42,22 @@ public:
 		else {
 			name = "b" + type;
 		}
+	}
+
+	bool move_to( Piece* dst, bool turn ){
+		cout << "trying to move piece " << endl;
+		if (dst == nullptr){
+			cout << "Space Available, Check Path" << endl;
+		}
+		else if (dst->isWhite() != turn){
+			cout << "Enemy Piece, Check Path" << endl;
+		}
+		else {
+			cout << "Own Piece, attempting to castle?" << endl;
+		}
+
+		return true;
+
 	}
 
 
