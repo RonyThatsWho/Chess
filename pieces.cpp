@@ -12,7 +12,8 @@ using namespace std;
 class Piece {
 
 protected:
-	int color;
+	bool m_isWhite;
+	bool m_hasMoved;
 	string name;
 	string type;
 	pair<int,int> position;
@@ -27,20 +28,20 @@ protected:
 	// virtual void move_to();
 
 public:
-	Piece (int val): color(val) {setName();}
-	int getColor() {return color;}
-	
-	friend ostream & operator << (ostream &out, const Piece &piece);
-	void setName (){
-		if (color){
-			name = "w" + type;
+	Piece (bool val): m_isWhite(val) { setName(); }
 
+	bool isWhite() { return m_isWhite; }
+	bool hasMoved() { return m_hasMoved; }
+
+	friend ostream & operator << (ostream &out, const Piece &piece);
+
+	void setName (){
+		if (m_isWhite){
+			name = "w" + type;
 		}
 		else {
 			name = "b" + type;
 		}
-
-
 	}
 
 
@@ -58,7 +59,7 @@ class Pawn: public Piece{
 	int moved;
 
 public:
-	Pawn(int val): Piece(val){type = "p"; setName();}
+	Pawn(bool val): Piece(val){ type = "p"; setName(); }
 
 	int has_moved(){
 		return moved;
@@ -73,7 +74,7 @@ class King: public Piece{
 	int moved;
 
 public:
-	King(int val): Piece(val){ type = "K"; setName();};
+	King(bool val): Piece(val){ type = "K"; setName(); };
 
 	int has_moved(){
 		return moved;
@@ -88,7 +89,7 @@ public:
 class Queen: public Piece{
 
 public:
-	Queen(int val): Piece(val){type = "Q"; setName();};
+	Queen(bool val): Piece(val){ type = "Q"; setName(); };
 
 };
 
@@ -99,7 +100,7 @@ class Rook: public Piece{
 	int moved;
 
 public:
-	Rook(int val): Piece(val){type = "R"; setName();};
+	Rook(bool val): Piece(val){ type = "R"; setName(); };
 
 	int has_moved(){
 		return moved;
@@ -115,7 +116,7 @@ public:
 class Knight: public Piece{
 
 public:
-	Knight(int val): Piece(val){type = "N"; setName();};
+	Knight(bool val): Piece(val){ type = "N"; setName(); };
 
 };
 
@@ -125,7 +126,7 @@ public:
 class Bishop: public Piece{
 
 public:
-	Bishop(int val): Piece(val){type = "B"; setName();};
+	Bishop(bool val): Piece(val){ type = "B"; setName(); };
 
 };
 
