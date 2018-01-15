@@ -38,29 +38,29 @@ bool validInput(string src, string dst, int turn){
 }
 
 
-bool gameOver(Gameboard* board){
+// bool gameOver(Gameboard* board){
 
-	//Check if game over, if not over process nextTurn;
+// 	//Check if game over, if not over process nextTurn;
 
-	static int count = 0;
+// 	static int count = 0;
 
-	count++;
+// 	count++;
 
-	if ((count % 2) == 0 ){
-		cout << endl << "Black's Move: ";
-	}
-	else{
-		cout <<  endl << "White's Move: ";
-	}
-	board->changePlayer();
+// 	if ((count % 2) == 0 ){
+// 		cout << endl << "Black's Move: ";
+// 	}
+// 	else{
+// 		cout <<  endl << "White's Move: ";
+// 	}
+// 	board->changePlayer();
 
-	if (count < 50) { // 50 turns for testing
-		return false;
-	}
+// 	if (count < 50) { // 50 turns for testing
+// 		return false;
+// 	}
 
-	return true;
+// 	return true;
 
-}
+// }
 
 void play(Gameboard* board){
 	std::string input, token, src, dst, prmt;
@@ -71,7 +71,7 @@ void play(Gameboard* board){
 	cout << "Welcome to Chess." << endl << endl;
 	printBoard (board);
 	
-	while ( !gameOver(board) ){
+	while ( !(board->isGameOver() ) ){
 
 		//Take in input, Strings pushed to vector
 		getline(cin, input);

@@ -8,12 +8,14 @@ class Gameboard {
 	Piece* board[8][8];
 	int turn;
 	bool whites_turn;
+	bool gameOver;
 
 
 public:
 	Gameboard(){
 		turn = 0;
 		whites_turn = true;
+		gameOver = false;
 
 
 		//Spawn Black Pieces
@@ -70,7 +72,7 @@ public:
 	void changePlayer() { whites_turn = !whites_turn; }
 
 	bool tryMove(int file0, int rank0, int file1, int rank1){
-		cout << "fileRank on Board" << endl;
+		//cout << "fileRank on Board" << endl;
 		Piece* src = board[file0][rank0];
 		if (src == nullptr){ return false; }
 		cout << "piece to move: " << *src << endl;
@@ -89,7 +91,14 @@ public:
 		return false;
 	}
 
+
+	bool isGameOver(){
+
+	return gameOver;
+}
+
 };
+
 
 
 
