@@ -32,28 +32,24 @@ public:
 
 	bool isWhite() { return m_isWhite; }
 	bool hasMoved() { return m_hasMoved; }
-
+	void setMove(){ m_hasMoved = true; }
 	friend ostream & operator << (ostream &out, const Piece &piece);
 
 	void setName (){
-		if (m_isWhite){
-			name = "w" + type;
-		}
-		else {
-			name = "b" + type;
-		}
+		if (m_isWhite){	name = "w" + type; }
+		else { name = "b" + type; }
 	}
 
-	bool move_to( Piece* dst, bool turn ){
-		cout << "trying to move piece " << endl;
+	bool moveTo( Piece* dst, bool turn ){
+		cout << "\033[1;32mmove_to(): Piece Line 47\033[0m " << endl;
 		if (dst == nullptr){
-			cout << "Space Available, Check Path" << endl;
+			cout << "\033[1;36mEmpty Square,Need To Check Path\033[0m" << endl;
 		}
 		else if (dst->isWhite() != turn){
-			cout << "Enemy Piece, Check Path" << endl;
+			cout <<  "\033[1;36mEnemy Piece Check Path \033[0m" << endl;
 		}
 		else {
-			cout << "Own Piece, attempting to castle?" << endl;
+			cout << "\033[1;33mOwn Piece -> Castle Attempt?\033[0m" << endl;
 		}
 
 		return true;
@@ -72,14 +68,9 @@ ostream & operator << (ostream &out, const Piece &piece){
 
 //Pawn Class
 class Pawn: public Piece{
-	int moved;
 
 public:
 	Pawn(bool val): Piece(val){ type = "p"; setName(); }
-
-	int has_moved(){
-		return moved;
-	}
 
 };
 
@@ -92,9 +83,6 @@ class King: public Piece{
 public:
 	King(bool val): Piece(val){ type = "K"; setName(); };
 
-	int has_moved(){
-		return moved;
-	}
 
 	void castle(){}
 
@@ -113,14 +101,10 @@ public:
 
 //Rook
 class Rook: public Piece{
-	int moved;
 
 public:
 	Rook(bool val): Piece(val){ type = "R"; setName(); };
 
-	int has_moved(){
-		return moved;
-	}
 
 	void castle(){
 

@@ -10,10 +10,11 @@ class Gameboard {
 	int turn;
 	bool whites_turn;
 	bool gameOver;
+	bool drawAvailable;
 
 
 public:
-	Gameboard(){
+	Gameboard(){ //Initialize new game
 		turn = 0;
 		whites_turn = true;
 		gameOver = false;
@@ -60,7 +61,7 @@ public:
 
 	}
 
-	void print(int i, int j){
+	void printSquare(int i, int j){
 		if (board[i][j] != nullptr){
 			cout << *(board[i][j]);
 		}
@@ -68,6 +69,21 @@ public:
 			cout << "##";
 		}
 		else cout << "  ";
+	}
+
+	void printBoard() {
+		cout << endl;
+		for (int j = 7; j > -1; j--){
+			for (int i = 0; i < 8; i++){
+
+				printSquare(i,j);
+				if (i < 8) (cout << " ");
+
+			}
+
+			cout << j+1 << endl;
+		}
+		cout << " a  b  c  d  e  f  g  h" << endl << endl;;
 	}
 
 	void changePlayer() { 
@@ -87,19 +103,27 @@ public:
 	}
 
 	bool tryMove(int file0, int rank0, int file1, int rank1){
+		cout << "\033[1;32mtryMove() - Gameboard line 104:\033[0m " << endl;
 		//cout << "fileRank on Board" << endl;
 		Piece* src = board[file0][rank0];
-		if (src == nullptr){ return false; }
-		cout << "piece to move: " << *src << endl;
+		if (src == nullptr){
+			cout << "\033[1;31mtryMove(): returning false (source is null)\033[0m" << endl;
+			return false; 
+		}
+
+
+		cout << "Chosen Piece: " << *src << endl;
 		Piece* dst = board[file1][rank1];
-		if (src->isWhite() && whites_turn){
-			cout << "Player's Own Piece: " << src->isWhite() << endl;
-			if (src->move_to(dst, whites_turn)){
+		cout << "Player Color: " << src->isWhite() << ", Piece Color: " << whites_turn << endl;
+		if (src->isWhite() == whites_turn){	
+			if (src->moveTo(dst, whites_turn)){
 				return true;
 			}
 
-			return true;
+			cout << "\033[1;31mtryMove(): moveTo returned false (invalid dest?)\033[0m" << endl;
+			return false;
 		}
+		cout << "\033[1;31mtryMove(): returning false (not piece owner)\033[0m" << endl;
 		return false;
 	}
 
@@ -110,23 +134,5 @@ public:
 	}
 
 
-
-
-
-
-	void printBoard() {
-
-		for (int j = 7; j > -1; j--){
-			for (int i = 0; i < 8; i++){
-
-				print(i,j);
-				if (i < 8) (cout << " ");
-
-			}
-
-			cout << j+1 << endl;
-		}
-		cout << " a  b  c  d  e  f  g  h" << endl << endl;;
-	}
 
 };

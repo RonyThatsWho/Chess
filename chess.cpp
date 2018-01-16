@@ -17,14 +17,14 @@ bool parseInput(string input, int &file, int &rank ){
 	char f = input[0];
 	char r = input[1];
 
-	cout << f << " " << r << endl;
+	//cout << f << " " << r << endl;
 
 	if ( ('a' <= f) && (f <= 'h') ){
 		file = f - 'a';
 	}
 	else return false;
 
-	if ( ('0' < r) && (r < '8') ){
+	if ( ('0' < r) && (r <= '8') ){
 		rank = r - '1';
 	}
 	else return false;
@@ -70,6 +70,7 @@ void play(Gameboard* board){
 
 	cout << "Welcome to Chess." << endl << endl;
 	board->printBoard();
+	cout << "White's Move: ";
 	
 	while ( !(board->isGameOver() ) ){
 
@@ -84,13 +85,22 @@ void play(Gameboard* board){
 		else if (tokens.size() == 2){
 			
 		//Check if input valid, and then convert to positions
-			if( (tokens[0].length() == 2) && (tokens[0].length() == 2) ){
-				cout << "Both Good " << endl;
-				//cout <<  tokens[0][0]  << "   " << tokens[0][1] << endl;
+			if( (tokens[0].length() == 2) && (tokens[0].length() == 2 && (tokens[0] != tokens[1])) ){
+				cout << "\033[;32mValid Length, Parsing Input... \033[0m" << endl;
+				
 
 				int file0, rank0, file1, rank1;
+
+
 				if (parseInput(tokens[0], file0, rank0) && parseInput(tokens[1], file1, rank1)){
-					if (board->tryMove(file0,rank0,file1,rank1)){ board->changePlayer(); };
+				// This point forward should be part of gameboard
+
+					if (board->tryMove(file0,rank0,file1,rank1)){  //if move valid change player
+						board->changePlayer(); 
+					}
+					else { //Move Failed, Need to try again? Loop back to taking input
+
+					}
 
 				}
 				
