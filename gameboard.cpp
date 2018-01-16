@@ -4,6 +4,7 @@
 #define	black false
 
 
+
 class Gameboard {
 	Piece* board[8][8];
 	int turn;
@@ -69,7 +70,21 @@ public:
 		else cout << "  ";
 	}
 
-	void changePlayer() { whites_turn = !whites_turn; }
+	void changePlayer() { 
+		whites_turn = !whites_turn;
+		turn++;
+
+		printBoard();
+
+		if (whites_turn){
+			cout << "White's Move: " ;
+		}
+		else{
+			cout << "Black's Move: ";
+		}
+
+
+	}
 
 	bool tryMove(int file0, int rank0, int file1, int rank1){
 		//cout << "fileRank on Board" << endl;
@@ -83,9 +98,6 @@ public:
 				return true;
 			}
 
-
-
-
 			return true;
 		}
 		return false;
@@ -95,24 +107,26 @@ public:
 	bool isGameOver(){
 
 	return gameOver;
-}
+	}
+
+
+
+
+
+
+	void printBoard() {
+
+		for (int j = 7; j > -1; j--){
+			for (int i = 0; i < 8; i++){
+
+				print(i,j);
+				if (i < 8) (cout << " ");
+
+			}
+
+			cout << j+1 << endl;
+		}
+		cout << " a  b  c  d  e  f  g  h" << endl << endl;;
+	}
 
 };
-
-
-
-
-void printBoard(Gameboard* board) {
-
-	for (int j = 7; j > -1; j--){
-		for (int i = 0; i < 8; i++){
-
-			board->print(i,j);
-			if (i < 8) (cout << " ");
-
-		}
-
-		cout << j+1 << endl;
-	}
-	cout << " a  b  c  d  e  f  g  h" << endl << endl;;
-}

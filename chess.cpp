@@ -69,7 +69,7 @@ void play(Gameboard* board){
 
 
 	cout << "Welcome to Chess." << endl << endl;
-	printBoard (board);
+	board->printBoard();
 	
 	while ( !(board->isGameOver() ) ){
 
@@ -90,7 +90,7 @@ void play(Gameboard* board){
 
 				int file0, rank0, file1, rank1;
 				if (parseInput(tokens[0], file0, rank0) && parseInput(tokens[1], file1, rank1)){
-					board->tryMove(file0,rank0,file1,rank1);
+					if (board->tryMove(file0,rank0,file1,rank1)){ board->changePlayer(); };
 
 				}
 				
@@ -125,7 +125,7 @@ void play(Gameboard* board){
 
 		//
 		tokens.clear();
-		printBoard (board);
+		//printBoard (board);
 
 
 	}
