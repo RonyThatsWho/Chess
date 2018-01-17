@@ -16,7 +16,8 @@ protected:
 	bool m_hasMoved;
 	string name;
 	string type;
-	pair<int,int> position;
+	int m_file;
+	int m_rank;
 	//vector<pair<int,int> > a;
 
 
@@ -38,6 +39,16 @@ public:
 	void setName (){
 		if (m_isWhite){	name = "w" + type; }
 		else { name = "b" + type; }
+	}
+
+	bool isPathClear(int file, int rank){
+
+		/*
+			Need to determine movement type based on Piece type and Destination
+			Horizontal, Vertical, Diagnal or L-Shape
+
+		*/
+
 	}
 
 	bool moveTo( Piece* dst, bool turn ){
@@ -78,7 +89,6 @@ public:
 
 //King
 class King: public Piece{
-	int moved;
 
 public:
 	King(bool val): Piece(val){ type = "K"; setName(); };
