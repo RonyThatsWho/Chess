@@ -48,6 +48,7 @@ public:
 			Horizontal, Vertical, Diagnal or L-Shape
 
 		*/
+		return true;
 
 	}
 
@@ -55,6 +56,12 @@ public:
 		cout << "\033[1;32mmove_to(): Piece Line 47\033[0m " << endl;
 		if (dst == nullptr){
 			cout << "\033[1;36mEmpty Square,Need To Check Path\033[0m" << endl;
+			
+			if (isPathClear(0,0)){
+
+
+			}
+
 		}
 		else if (dst->isWhite() != turn){
 			cout <<  "\033[1;36mEnemy Piece Check Path \033[0m" << endl;
@@ -114,7 +121,6 @@ class Rook: public Piece{
 
 public:
 	Rook(bool val): Piece(val){ type = "R"; setName(); };
-
 
 	void castle(){
 

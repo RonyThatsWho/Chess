@@ -70,9 +70,11 @@ void play(Gameboard* board){
 
 	cout << "Welcome to Chess." << endl << endl;
 	board->printBoard();
-	cout << "White's Move: ";
+	
 	
 	while ( !(board->isGameOver() ) ){
+
+		board->currentPlayer();
 
 		//Take in input, Strings pushed to vector
 		getline(cin, input);
@@ -96,7 +98,7 @@ void play(Gameboard* board){
 				// This point forward should be part of gameboard
 
 					if (board->tryMove(file0,rank0,file1,rank1)){  //if move valid change player
-						board->changePlayer(); 
+						board->changePlayer();  //Board should be changing player....
 					}
 					else { //Move Failed, Need to try again? Loop back to taking input
 
@@ -128,7 +130,7 @@ void play(Gameboard* board){
 		//Player has quit
 		else if(tokens.size() == 1){
 			if (tokens[0] == "resign") {
-				cout << "Game Over" << endl;
+				board->resign();
 			}			
 		}
 		cout << endl;

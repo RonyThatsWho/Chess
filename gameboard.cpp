@@ -11,6 +11,8 @@ class Gameboard {
 	bool whites_turn;
 	bool gameOver;
 	bool drawAvailable;
+	bool isWhiteWinner;
+	bool draw;
 
 
 public:
@@ -92,13 +94,16 @@ public:
 
 		printBoard();
 
+	}
+
+	void currentPlayer(){
+
 		if (whites_turn){
 			cout << "White's Move: " ;
 		}
 		else{
 			cout << "Black's Move: ";
 		}
-
 
 	}
 
@@ -127,8 +132,28 @@ public:
 		return false;
 	}
 
+	void resign(){
+		if(!whites_turn){
+			isWhiteWinner = true;
+		}
+
+		gameOver = true;
+	}
 
 	bool isGameOver(){
+		if (gameOver){
+			cout << "Game Over!" << endl;
+
+			if (isWhiteWinner){
+				cout << "White Wins!" << endl;
+			}
+			else if (draw){
+				cout << "Draw!" << endl;
+			}
+			else{
+				cout << "Black Wins!" << endl;
+			}
+		}
 
 	return gameOver;
 	}
