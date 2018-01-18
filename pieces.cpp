@@ -46,14 +46,32 @@ public:
 		/*
 			Need to determine movement type based on Piece type and Destination
 			Horizontal, Vertical, Diagnal or L-Shape
-
 		*/
+
+		bool vert;
+		bool hor;
+		cout << "isPathClear() - " << file-m_file << " " << rank-m_rank << endl;
+
+
+		//Vertical Movement Check
+		if (file-m_file){
+			bool vert = true;
+			cout << "vert true" << endl;
+		}
+
+		//Horizontal Movement Check
+		if (rank-m_rank){
+			bool hor = true;
+			cout << "hor true" << endl;
+		}
+
+
 		return true;
 
 	}
 
 	bool moveTo( Piece* dst, bool turn ){
-		cout << "\033[1;32mmove_to(): Piece Line 47\033[0m " << endl;
+		cout << "\033[1;32mmove_to(): Piece Line 55\033[0m " << endl;
 		if (dst == nullptr){
 			cout << "\033[1;36mEmpty Square,Need To Check Path\033[0m" << endl;
 			
@@ -68,6 +86,14 @@ public:
 		}
 		else {
 			cout << "\033[1;33mOwn Piece -> Castle Attempt?\033[0m" << endl;
+			if ((type == "K") && (dst->type == "R")){
+
+
+			}
+			else {
+				cout << "\033[1;31mTargeting Own Piece, Cannot Castle\033[0m" << endl;
+				return false;
+			}
 		}
 
 		return true;
