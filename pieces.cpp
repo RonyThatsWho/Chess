@@ -2,8 +2,6 @@
 #ifndef PIECES_CPP
 #define PIECES_CPP
 
-
-
 #include <string>
 
 using namespace std;
@@ -46,6 +44,7 @@ public:
 		/*
 			Need to determine movement type based on Piece type and Destination
 			Horizontal, Vertical, Diagnal or L-Shape
+
 		*/
 
 		bool vert;
@@ -66,12 +65,13 @@ public:
 		}
 
 
+
 		return true;
 
 	}
 
 	bool moveTo( Piece* dst, bool turn ){
-		cout << "\033[1;32mmove_to(): Piece Line 55\033[0m " << endl;
+		cout << "\033[1;32mmove_to(): Piece Line 73\033[0m " << endl;
 		if (dst == nullptr){
 			cout << "\033[1;36mEmpty Square,Need To Check Path\033[0m" << endl;
 			

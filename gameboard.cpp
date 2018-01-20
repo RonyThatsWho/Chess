@@ -3,7 +3,6 @@
 #define white true
 #define	black false
 
-
 struct move{
 	int file0;
 	int rank0;
@@ -11,7 +10,6 @@ struct move{
 	int rank1;
 
 } 
-
 
 class Gameboard {
 	Piece* board[8][8];
@@ -116,7 +114,7 @@ public:
 	}
 
 	bool tryMove(int file0, int rank0, int file1, int rank1){
-		cout << "\033[1;32mtryMove() - Gameboard line 110:\033[0m " << endl;
+		cout << "\033[1;32mtryMove() - Gameboard line 116:\033[0m " << endl;
 		//cout << "fileRank on Board" << endl;
 		Piece* src = board[file0][rank0];
 		if (src == nullptr){
