@@ -86,7 +86,9 @@ public:
 		}
 		else {
 			cout << "\033[1;33mOwn Piece -> Castle Attempt?\033[0m" << endl;
-			if ((type == "K") && (dst->type == "R")){
+			if ((type == "K") && (dst->type == "R") ){
+				//Need to cast and call castle
+				//return (dynamic_cast<King*>(this))->castle(dst);
 
 
 			}
@@ -127,7 +129,19 @@ public:
 	King(bool val): Piece(val){ type = "K"; setName(); };
 
 
-	void castle(){}
+	bool castle(Piece* rook){
+		if ( hasMoved() || rook->hasMoved()){
+			return false;
+		}
+
+
+		setMove();
+		rook->setMove();
+		return true;
+
+
+
+	}
 
 };
 
@@ -148,11 +162,8 @@ class Rook: public Piece{
 public:
 	Rook(bool val): Piece(val){ type = "R"; setName(); };
 
-	void castle(){
-
-	}
-
 };
+ 
 
 //Knight
 class Knight: public Piece{

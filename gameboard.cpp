@@ -9,7 +9,7 @@ struct move{
 	int file1;
 	int rank1;
 
-} 
+};
 
 class Gameboard {
 	Piece* board[8][8];
