@@ -51,17 +51,30 @@ public:
 		bool hor;
 		cout << "isPathClear() - " << file-m_file << " " << rank-m_rank << endl;
 
+		int vertDif = file-m_file;
+		int horDif = rank-m_rank;
+
 
 		//Vertical Movement Check
-		if (file-m_file){
+		if (vertDif){
 			bool vert = true;
 			cout << "vert true" << endl;
 		}
 
 		//Horizontal Movement Check
-		if (rank-m_rank){
+		if (horDif){
 			bool hor = true;
 			cout << "hor true" << endl;
+		}
+
+		if (vert && hor){ // Diag movement
+			if(vertDif == horDif ){
+				//check positions
+
+			}
+		}
+		else if{
+
 		}
 
 
@@ -75,7 +88,7 @@ public:
 		if (dst == nullptr){
 			cout << "\033[1;36mEmpty Square,Need To Check Path\033[0m" << endl;
 			
-			if (isPathClear(0,0)){
+			if (isPathClear()){
 
 				//change
 			}
