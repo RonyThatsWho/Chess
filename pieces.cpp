@@ -3,6 +3,7 @@
 #define PIECES_CPP
 
 #include <string>
+#include "pieces.h"
 
 using namespace std;
 
