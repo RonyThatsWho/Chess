@@ -1,7 +1,4 @@
 
-#ifndef PIECES_CPP
-#define PIECES_CPP
-
 #include <string>
 #include "pieces.h"
 
@@ -198,4 +195,4 @@ public:
 };
 
 
-#endif
+

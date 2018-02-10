@@ -1,7 +1,10 @@
-#pragma once
+#ifndef PIECES_H
+#define PIECES_H
 
 #include <string>
-using namespace std;
+using namespace;
+
+
 class Piece {
 
 protected:
@@ -11,22 +14,13 @@ protected:
 	string type;
 	int m_file;
 	int m_rank;
-	//vector<pair<int,int> > a;
-
-
-	// void available_moves();
-	// 
-	// virtual void draw_piece();
-	// virtual bool clear_path(pair<int,int>, pair<int,int>);
-	// virtual validDestination(pair<int,int>);
-	 
 
 public:
 	Piece (bool val);
 	bool isWhite();
 	bool hasMoved();
 	void setMove();
-	friend ostream & operator << (ostream &out, const Piece &piece);
+	//friend ostream & operator << (ostream &out, const Piece &piece);
 
 	void setName ();
 	bool isPathClear(int file, int rank);
@@ -34,14 +28,14 @@ public:
 
 };
 
-ostream & operator << (ostream &out, const Piece &piece);
+//ostream & operator << (ostream &out, const Piece &piece);
 
 
 //Pawn Class
 class Pawn: public Piece{
 
 public:
-	Pawn(bool val): Piece(val);
+	Pawn(bool val);
 
 };
 
@@ -50,7 +44,7 @@ public:
 //King
 class King: public Piece{
 public:
-	King(bool val): Piece(val);
+	King(bool val);
 	bool castle(Piece* rook);
 
 };
@@ -60,7 +54,7 @@ public:
 class Queen: public Piece{
 
 public:
-	Queen(bool val): Piece(val);
+	Queen(bool val);
 
 };
 
@@ -70,7 +64,7 @@ public:
 class Rook: public Piece{
 
 public:
-	Rook(bool val): Piece(val);
+	Rook(bool val);
 
 };
  
@@ -79,7 +73,7 @@ public:
 class Knight: public Piece{
 
 public:
-	Knight(bool val): Piece(val);
+	Knight(bool val);
 
 };
 
@@ -92,3 +86,5 @@ public:
 	Bishop(bool val);
 
 };
+
+#endif
