@@ -120,6 +120,16 @@ void play(Gameboard* board){
 
 
 			}
+
+
+			else if (tokens[0] == "pos"){
+				int rank;
+				int file;
+				parseInput(tokens[1], file, rank);
+				std::cout << file << " // " << rank << std::endl;
+
+				
+			}	
 			else { //invalid input
 
 				cout << "invalid" << endl;
@@ -127,11 +137,35 @@ void play(Gameboard* board){
 
 
 		}
+		else if (tokens[0] == "valid"){
+			//valid placement test
+
+			int rank0;
+			int file0;
+			int file1;
+			int rank1;
+			string result = "false";
+
+			parseInput(tokens[1], file0, rank0);
+			parseInput(tokens[2], file1, rank1);
+
+			Piece * src = board->board[file0][rank0];
+
+			if (board->validPlacement(src, file1,rank1)){
+				result = "true";
+			}
+
+			cout << "move: " << result << endl;
+
+		}
+
+
 		//Player has quit
 		else if(tokens.size() == 1){
 			if (tokens[0] == "resign") {
 				board->resign();
-			}			
+			}
+
 		}
 		cout << endl;
 

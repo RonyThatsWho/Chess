@@ -2,7 +2,12 @@
 #define PIECES_H
 
 #include <string>
-using namespace;
+using namespace std;
+
+typedef struct{
+	int file;
+	int rank;
+} pPosition;
 
 
 class Piece {
@@ -15,6 +20,7 @@ protected:
 	int m_file;
 	int m_rank;
 
+
 public:
 	Piece (bool val);
 	bool isWhite();
@@ -25,8 +31,13 @@ public:
 	void setName ();
 	bool isPathClear(int file, int rank);
 	bool moveTo( Piece* dst, bool turn );
+	struct pPosition getPosition (){
+		struct pPosition  currentPos = {m_file, m_rank};
+		return currentPosition;
+	}
 
 };
+
 
 //ostream & operator << (ostream &out, const Piece &piece);
 
