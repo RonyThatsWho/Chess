@@ -34,6 +34,9 @@ protected:
 	int m_rank;
 
 	vector<moveRule> rules;
+	vector<moveRule> captureRules;
+
+
 	//vector<moves> moveRules;
 
 
@@ -52,19 +55,24 @@ protected:
 	 
 
 public:
-	Piece (bool val): m_isWhite(val) { setName();  }
+	Piece (bool val, int file, int rank): m_isWhite(val) { 
+		setName();
+		setPlace(file, rank);
+		m_hasMoved = false;
+
+	}
 
 	bool isWhite() { return m_isWhite; }
 	bool hasMoved() { return m_hasMoved; }
-	void setMove(){ m_hasMoved = true; }
-	std::string getType(){ return type;}
+	virtual void setMoved(){ m_hasMoved = true; cout << "pice has moved()" << endl;}
+	string getType(){ return type;}
 
 
 	friend ostream & operator << (ostream &out, const Piece &piece);
 
 	void setName (){
-		if (m_isWhite){	name = "w" + type; }
-		else { name = "b" + type; }
+		if (m_isWhite){	name = "\033[1;37mw" + type + "\033[0m"; }
+		else { name =  "\033[1;34mb" + type + "\033[0m"; }
 	}
 
 	void setPlace (int file, int rank){
@@ -198,16 +206,27 @@ ostream & operator << (ostream &out, const Piece &piece){
 class Pawn: public Piece{
 
 public:
-	Pawn(bool val, int file, int rank): Piece(val){ 
+	Pawn(bool val, int file, int rank): Piece(val, file, rank){ 
 		type = "p"; 
 		setName(); 
-		setPlace(file, rank);
+		//setPlace(file, rank);
 
 
 		rules.push_back((moveRule){0,1,0});
-		//rules.push_back((moveRule){2,-1,3});
-		//rules.push_back((moveRule){-1,-2,3});
+		rules.push_back((moveRule){0,2,0});
+
+		captureRules.push_back ((moveRule){1,1,1});
+		
 	}
+
+	void setMoved() override{
+		m_hasMoved = true;
+		rules.erase(rules.begin()+1);
+
+		cout << "moved, rules size: " << rules.size() << endl; 
+
+	} 
+
 
 };
 
@@ -217,7 +236,14 @@ public:
 class King: public Piece{
 
 public:
-	King(bool val): Piece(val){ type = "K"; setName(); };
+	King(bool val, int file, int rank): Piece(val, file, rank){ 
+		type = "K"; 
+		setName();
+
+		rules.push_back((moveRule) { 1,-1, 2}); //Diagnal 1 limit
+		rules.push_back((moveRule) { 1, 0, 0}); //Vertical Unlimited
+		rules.push_back((moveRule) { 0,-1, 0}); //Horizontal Unlimited
+	};
 
 
 	bool castle(Piece* rook){
@@ -226,8 +252,8 @@ public:
 		}
 
 
-		setMove();
-		rook->setMove();
+		setMoved();
+		rook->setMoved();
 		return true;
 
 
@@ -241,14 +267,14 @@ public:
 class Queen: public Piece{
 
 public:
-	Queen(bool val, int file, int rank): Piece(val){ 
+	Queen(bool val, int file, int rank): Piece(val, file, rank){ 
 		type = "Q"; 
 		setName();
-		setPlace(file, rank);
+		//setPlace(file, rank);
 
-		rules.push_back((moveRule) { 3,3,2});
-		rules.push_back((moveRule) { 3,0,0});
-		rules.push_back((moveRule) { 0,3,0});
+		rules.push_back((moveRule) { 3,3,2}); //Diagnal Unlimited
+		rules.push_back((moveRule) { 3,0,0}); //Vertical Unlimited
+		rules.push_back((moveRule) { 0,3,0}); //Horizontal Unlimited
 	};
 
 };
@@ -259,7 +285,13 @@ public:
 class Rook: public Piece{
 
 public:
-	Rook(bool val): Piece(val){ type = "R"; setName(); };
+	Rook(bool val, int file, int rank): Piece(val, file, rank){
+		type = "R";
+		setName();
+
+		rules.push_back((moveRule) { 3,0,0}); //Vertical Unlimited
+		rules.push_back((moveRule) { 0,3,0}); //Horizontal Unlimited
+	};
 
 };
  
@@ -268,7 +300,14 @@ public:
 class Knight: public Piece{
 
 public:
-	Knight(bool val): Piece(val){ type = "N"; setName(); };
+	Knight(bool val, int file, int rank): Piece(val, file, rank){ 
+		type = "N";
+		setName();
+
+		rules.push_back((moveRule){ 2,-1,3}); // 
+		rules.push_back((moveRule){ 1,-2,3});
+
+	};
 
 };
 
@@ -278,7 +317,12 @@ public:
 class Bishop: public Piece{
 
 public:
-	Bishop(bool val): Piece(val){ type = "B"; setName(); };
+	Bishop(bool val, int file, int rank): Piece(val, file, rank){
+		type = "B";
+		setName();
+
+		rules.push_back((moveRule) { 3,3,2}); //Diagnal Unlimited
+	};
 
 };
 

@@ -38,6 +38,7 @@ class Gameboard {
 
 
 public:
+	//Currently Public for testing
 	Piece* board[8][8];
 
 	Gameboard(){ //Initialize new game
@@ -47,14 +48,14 @@ public:
 
 		//Board[file?][rank?]
 		//Spawn Black Pieces
-		board[0][7] = new Rook(black);
-		board[1][7] = new Knight(black);
-		board[2][7] = new Bishop(black);
-		//board[3][7] = new Queen(black);
-		board[4][7] = new King(black);
-		board[5][7] = new Bishop(black);
-		board[6][7] = new Knight(black);
-		board[7][7] = new Rook(black);
+		board[0][7] = new Rook(black, 0 ,7);
+		board[1][7] = new Knight(black, 1, 7);
+		board[2][7] = new Bishop(black, 2, 7);
+		board[3][7] = new Queen(black, 3, 7);
+		board[4][7] = new King(black, 4, 7);
+		board[5][7] = new Bishop(black, 5, 7);
+		board[6][7] = new Knight(black, 6, 7);
+		board[7][7] = new Rook(black, 7, 7);
 		
 		board[0][6] = new Pawn(black, 0, 6);
 		board[1][6] = new Pawn(black, 1, 6);
@@ -67,18 +68,18 @@ public:
 
 
 		//Spawn White Pieces
-		board[0][0] = new Rook(white);
-		board[1][0] = new Knight(white);
-		board[2][0] = new Bishop(white);
-		//board[3][0] = new Queen(white);
-		board[4][0] = new King(white);
-		board[5][0] = new Bishop(white);
-		board[6][0] = new Knight(white);
-		board[7][0] = new Rook(white);
+		board[0][0] = new Rook(white, 0, 0);
+		board[1][0] = new Knight(white, 1, 0);
+		board[2][0] = new Bishop(white, 2, 0);
+		board[3][0] = new Queen(white, 3, 0);
+		board[4][0] = new King(white, 4, 0);
+		board[5][0] = new Bishop(white, 5, 0);
+		board[6][0] = new Knight(white, 6, 0);
+		board[7][0] = new Rook(white, 7, 0);
 
 		board[0][1] = new Pawn(white, 0, 1);
 		board[1][1] = new Pawn(white, 1, 1);
-		//board[2][1] = new Pawn(white, 2, 1);
+		board[2][1] = new Pawn(white, 2, 1);
 		board[3][1] = new Pawn(white, 3, 1);
 		board[4][1] = new Pawn(white, 4, 1);
 		board[5][1] = new Pawn(white, 5, 1);
@@ -87,8 +88,8 @@ public:
 
 
 		//TESTING
-		board[2][1] = new Queen(white, 2, 1);
-		board[5][4] = new Queen(black, 5, 4);
+		// board[2][1] = new Queen(white, 2, 1);
+		// board[5][4] = new Queen(black, 5, 4);
 
 	}
 
@@ -114,14 +115,49 @@ public:
 
 			cout << j+1 << endl;
 		}
-		cout << " a  b  c  d  e  f  g  h" << endl << endl;;
+		cout << " a  b  c  d  e  f  g  h" << endl << endl;
+	}
+
+	void printSquare_(int i, int j){
+		if (board[i][j] != nullptr){
+			cout << *(board[i][j]);
+		}
+		// else if ((i+j)%2 == 0 ){
+		// 	cout << "##";
+		// }
+		else cout << "  ";
+	}
+
+
+	void printBoard_() {
+		string line = "+-----+-----+-----+-----+-----+-----+-----+-----+\n";
+		cout << line;
+		for (int j = 7; j > -1; j--){
+			cout << "|  ";
+			for (int i = 0; i < 8; i++){
+
+				printSquare_(i,j);
+				cout << " | ";
+				if (i < 8) (cout << " ");
+
+			}
+
+			cout << j+1 << endl;
+			cout << line;
+		}
+		cout << "   a     b     c     d     e     f     g     h" << endl << endl;
+
+
+
+
+
 	}
 
 	void changePlayer() { 
 		whites_turn = !whites_turn;
 		turn++;
 
-		printBoard();
+		printBoard_();
 
 	}
 
@@ -140,10 +176,7 @@ public:
 	int vectorize(int vector){
 		//cout <<"vectorize: " << vector << ", abs: " << abs(vector) << endl;
 		if (vector == 0) return 0;
-
 		vector = vector / abs(vector);
-
-		//cout << "vectorized: " << vector << endl;
 
 		return vector;
 	}
@@ -177,8 +210,8 @@ public:
 
 
 	bool isPathClear(Piece* src, int file, int rank){
-		
 
+		//Knights do not require clear path, return true
 		if (src->getType() == "N") return true;
 
 		int fileVector = vectorize(file-src->getFile());
@@ -186,11 +219,15 @@ public:
 
 		int fileCheck = src->getFile() + fileVector;
 		int rankCheck = src->getRank() + rankVector;
+		//cout << "Path destination: " << file <<  " " << rank << endl;
 
-		while ((fileCheck != file) && (rankCheck != rank) ){
-			cout << "check path .... " << fileCheck << "  " << rankCheck << endl;
+		//cout << "Start: " << src->getFile() << " + " << fileVector << ",  " << src->getRank()  << " + " << rankVector <<endl;
+		//cout << "while: " << fileCheck << " " << rankCheck << endl;
+
+		while ((fileCheck != file) || (rankCheck != rank) ){
+			//cout << "check path .... " << fileCheck << "  " << rankCheck << endl;
 			if (board[fileCheck][rankCheck] != nullptr){
-				cout << "square: "<< fileCheck <<"  " << rankCheck << " not NULL" << endl;
+				cout << "square: "<< fileCheck <<"  " << rankCheck << " not NULL piece: ";
 				printSquare(fileCheck,rankCheck);
 				cout << endl;
 				return false;
@@ -199,7 +236,7 @@ public:
 			rankCheck += rankVector;
 
 		}
-		cout << "PATH CLEAR!" << endl;
+		cout << "\033[1;32mPATH CLEAR!\033[0m" << endl;
 
 		return true;
 	}
@@ -290,27 +327,22 @@ bool validRank(int rankMoveset, int rank){
 		case -2:
 			if (abs(rank) == 2) return true;
 			else return false;
-			break;
 
 		case -1:
 			if (abs(rank) == 1) return true;
 			else return false;
-			break;
 
 		case 0:
 			if (rank == 0) return true;
 			else return false;
-			break;
 
 		case 1:
 			if (abs(rank) == 1) return true;
 			else return false;
-			break;
 
 		case 2:
 			if (rank == 2) return true;
 			else return false;
-			break;
 
 		default:
 			return true;
@@ -322,9 +354,11 @@ bool validRank(int rankMoveset, int rank){
 
 bool validPlacement (Piece* src, int file, int rank){ 
 
-	int fileDif = src->getFile()-file;
-	int rankDif = src->getRank()-rank;
+	int fileDif = file-src->getFile();
+	int rankDif = rank-src->getRank();
 
+	cout << "file) dst - src: " << file << " - " << src->getFile() << endl;
+	cout << "rank) dst - src: " << rank << " - " << src->getRank() << endl; 
 	cout << "fileDif: " << fileDif << ", rankDif: " << rankDif << endl;
 
 	for (auto rule: src->getRules()){
@@ -356,10 +390,25 @@ bool validPlacement (Piece* src, int file, int rank){
 }
 
 
-	bool moveTo(Piece* src, Piece* dst){
-		std::cout << "\033[1;32mmove_to(): Piece Line 93\033[0m " << std::endl;
+	bool moveTo(Piece* src, int file, int rank){
+
+		Piece* dst = board[file][rank];
+		std::cout << "\033[1;32mmove_to(): Piece Line 356\033[0m " << std::endl;
 		if (dst == nullptr){
-			std::cout << "\033[1;36mEmpty Square,Need To Check Path\033[0m" << std::endl;
+			std::cout << "\033[1;36mEmpty Square\033[0m" << std::endl;
+
+			board[src->getFile()][src->getRank()] = nullptr;
+			board[file][rank] = src;
+			src->setPlace(file, rank);
+
+			if (!src->hasMoved()){
+				cout << "First time moving!" << endl;
+				src->setMoved();
+			}
+
+			return true;
+
+
 
 			
 			// if (isPathClear(m_rank, m_file)){
@@ -374,7 +423,11 @@ bool validPlacement (Piece* src, int file, int rank){
 
 		}
 		else if (dst->isWhite() != whites_turn){
-			std::cout <<  "\033[1;36mEnemy Piece Check Path \033[0m" << std::endl;
+			std::cout <<  "\033[1;36mEnemy Piece \033[0m" << std::endl;
+
+
+
+
 		}
 		else {
 			std::cout << "\033[1;33mOwn Piece -> Castle Attempt?\033[0m" << std::endl;
@@ -396,10 +449,10 @@ bool validPlacement (Piece* src, int file, int rank){
 
 
 	bool tryMove(int file0, int rank0, int file1, int rank1){
-		//Basic checks to see if Piece owner
-
+		//Calls Functions to verify move is allowed
 		cout << "\033[1;32mtryMove() - Gameboard line 116:\033[0m " << endl;
-		//cout << "fileRank on Board" << endl;
+
+
 		Piece* src = board[file0][rank0];
 		if (src == nullptr){
 			cout << "\033[1;31mtryMove(): returning false (source is null)\033[0m" << endl;
@@ -412,9 +465,11 @@ bool validPlacement (Piece* src, int file, int rank){
 
 
 		cout << "Player Color: " << src->isWhite() << ", Piece Color: " << whites_turn << endl;
+
+		//Are you piece owner
 		if (src->isWhite() == whites_turn){	
 
-			//You are Piece owner, Is move within Rules
+			//Move allowed within the Piece Rules
 			if (!validPlacement(src, file1, rank1)){
 				cout << "\033[1;31mtryMove(): validPlacement(), Movement breaks Piece rules \033[0m" << endl;
 				return false;
@@ -423,12 +478,13 @@ bool validPlacement (Piece* src, int file, int rank){
 			//Is Path Clear
 			if (!isPathClear(src, file1, rank1)){
 				cout << "\033[1;31mtryMove(): isPathClea(), Path Not Clear \033[0m" << endl;
+				return false;
 			}
 
 
 			//redundant? could prob just directly return the return, but no logs possibly?
 			//
-			if (moveTo(src, dst)){
+			if (moveTo(src, file1, rank1)){
 				return true;
 			}
 

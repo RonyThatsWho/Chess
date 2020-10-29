@@ -69,7 +69,7 @@ void play(Gameboard* board){
 
 
 	cout << "Welcome to Chess." << endl << endl;
-	board->printBoard();
+	board->printBoard_();
 	
 	
 	while ( !(board->isGameOver() ) ){
