@@ -88,7 +88,7 @@ void play(Gameboard* board){
 			
 		//Check if input valid, and then convert to positions
 			if( (tokens[0].length() == 2) && (tokens[0].length() == 2 && (tokens[0] != tokens[1])) ){
-				cout << "\033[;32mValid Length, Parsing Input... \033[0m" << endl;
+				//cout << "\033[;32mValid Length, Parsing Input... \033[0m" << endl;
 				
 
 				int file0, rank0, file1, rank1;
@@ -98,7 +98,7 @@ void play(Gameboard* board){
 				// This point forward should be part of gameboard
 
 					if (board->tryMove_(file0,rank0,file1,rank1)){  //if move valid change player
-						board->changePlayer();  //Board should be changing player....
+						//board->changePlayer();  //Board should be changing player....
 					}
 					else { //Move Failed, Need to try again? Loop back to taking input
 

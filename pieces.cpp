@@ -64,7 +64,7 @@ public:
 
 	bool isWhite() { return m_isWhite; }
 	bool hasMoved() { return m_hasMoved; }
-	virtual void setMoved(){ m_hasMoved = true; cout << "pice has moved()" << endl;}
+	virtual void setMoved(){ m_hasMoved = true; }
 	string getType(){ return type;}
 
 
@@ -116,11 +116,10 @@ public:
 		setName(); 
 		//setPlace(file, rank);
 
+		rules.push_back((moveRule){0, 1, 0});
+		rules.push_back((moveRule){0, 2, 0});
 
-		rules.push_back((moveRule){0,1,0});
-		rules.push_back((moveRule){0,2,0});
-
-		captureRules.push_back ((moveRule){1,1,1});
+		captureRules.push_back ((moveRule){1, 1, 1});
 		
 	}
 
@@ -128,7 +127,7 @@ public:
 		m_hasMoved = true;
 		rules.erase(rules.begin()+1);
 
-		cout << "moved, rules size: " << rules.size() << endl; 
+		//cout << "moved, rules size: " << rules.size() << endl; 
 
 	}
 
@@ -149,7 +148,7 @@ public:
 		type = "K"; 
 		setName();
 
-		rules.push_back((moveRule) { 1,-1, 2}); //Diagnal 1 limit
+		rules.push_back((moveRule) { 1,-1, 1}); //Diagnal 1 limit
 		rules.push_back((moveRule) { 1, 0, 0}); //Vertical Unlimited
 		rules.push_back((moveRule) { 0,-1, 0}); //Horizontal Unlimited
 	};
@@ -164,9 +163,6 @@ public:
 		setMoved();
 		rook->setMoved();
 		return true;
-
-
-
 	}
 
 };
@@ -181,9 +177,9 @@ public:
 		setName();
 		//setPlace(file, rank);
 
-		rules.push_back((moveRule) { 3,3,2}); //Diagnal Unlimited
-		rules.push_back((moveRule) { 3,0,0}); //Vertical Unlimited
-		rules.push_back((moveRule) { 0,3,0}); //Horizontal Unlimited
+		rules.push_back((moveRule) { 3, 3, 1}); //Diagnal Unlimited
+		rules.push_back((moveRule) { 3, 0, 0}); //Vertical Unlimited
+		rules.push_back((moveRule) { 0, 3, 0}); //Horizontal Unlimited
 	};
 
 };
@@ -198,8 +194,8 @@ public:
 		type = "R";
 		setName();
 
-		rules.push_back((moveRule) { 3,0,0}); //Vertical Unlimited
-		rules.push_back((moveRule) { 0,3,0}); //Horizontal Unlimited
+		rules.push_back((moveRule) { 3, 0, 0}); //Vertical Unlimited
+		rules.push_back((moveRule) { 0, 3, 0}); //Horizontal Unlimited
 	};
 
 };
@@ -213,8 +209,8 @@ public:
 		type = "N";
 		setName();
 
-		rules.push_back((moveRule){ 2,-1,3}); // 
-		rules.push_back((moveRule){ 1,-2,3});
+		rules.push_back((moveRule){ 2,-1, 3}); // 
+		rules.push_back((moveRule){ 1,-2, 3});
 
 	};
 
@@ -230,7 +226,7 @@ public:
 		type = "B";
 		setName();
 
-		rules.push_back((moveRule) { 3,3,2}); //Diagnal Unlimited
+		rules.push_back((moveRule) { 3, 3, 1}); //Diagnal Unlimited
 	};
 
 };

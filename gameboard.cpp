@@ -35,6 +35,9 @@ class Gameboard {
 	bool isWhiteWinner;
 	bool draw;
 
+	Piece* whiteKing;
+	Piece* blackKing;
+
 
 
 
@@ -87,7 +90,8 @@ public:
 		board[6][1] = new Pawn(white, 6, 1);
 		board[7][1] = new Pawn(white, 7, 1);
 
-
+		blackKing = board[4][7];
+		whiteKing = board[4][0];
 		//TESTING
 		// board[2][1] = new Queen(white, 2, 1);
 		// board[5][4] = new Queen(black, 5, 4);
@@ -123,15 +127,16 @@ public:
 		if (board[i][j] != nullptr){
 			cout << *(board[i][j]);
 		}
-		// else if ((i+j)%2 == 0 ){
-		// 	cout << "##";
-		// }
+		else if ((i+j)%2 == 0 ){
+			cout << "##";
+		}
 		else cout << "  ";
 	}
 
 
 	void printBoard_() {
 		string line = "+-----+-----+-----+-----+-----+-----+-----+-----+\n";
+		cout << endl <<"   a     b     c     d     e     f     g     h" << endl;
 		cout << line;
 		for (int j = 7; j > -1; j--){
 			cout << "|  ";
@@ -148,9 +153,28 @@ public:
 		}
 		cout << "   a     b     c     d     e     f     g     h" << endl << endl;
 
+	}
 
 
+	void printBoard__() {
+		string line = "\t+-----+-----+-----+-----+-----+-----+-----+-----+\n";
+		cout << endl <<"\t   a     b     c     d     e     f     g     h" << endl;
+		cout << line;
+		for (int j = 7; j > -1; j--){
+			cout << j+1;
+			cout << "\t|  ";
+			for (int i = 0; i < 8; i++){
 
+				printSquare_(i,j);
+				cout << " | ";
+				if (i < 8) (cout << " ");
+
+			}
+
+			cout << j+1 << endl;
+			cout << line;
+		}
+		cout << "\t   a     b     c     d     e     f     g     h" << endl << endl;
 
 	}
 
@@ -158,7 +182,7 @@ public:
 		whites_turn = !whites_turn;
 		turn++;
 
-		printBoard_();
+		printBoard__();
 
 	}
 
@@ -220,13 +244,13 @@ public:
 
 		int fileCheck = src->getFile() + fileVector;
 		int rankCheck = src->getRank() + rankVector;
-		//cout << "Path destination: " << file <<  " " << rank << endl;
+		// cout << "Path destination: " << file <<  " " << rank << endl;
 
-		//cout << "Start: " << src->getFile() << " + " << fileVector << ",  " << src->getRank()  << " + " << rankVector <<endl;
-		//cout << "while: " << fileCheck << " " << rankCheck << endl;
+		// cout << "Start: " << src->getFile() << " + " << fileVector << ",  " << src->getRank()  << " + " << rankVector <<endl;
+		// cout << "while: " << fileCheck << " " << rankCheck << endl;
 
 		while ((fileCheck != file) || (rankCheck != rank) ){
-			//cout << "check path .... " << fileCheck << "  " << rankCheck << endl;
+			// cout << "check path .... " << fileCheck << "  " << rankCheck << endl;
 			if (board[fileCheck][rankCheck] != nullptr){
 				cout << "square: "<< fileCheck <<"  " << rankCheck << " not NULL piece: ";
 				printSquare(fileCheck,rankCheck);
@@ -237,7 +261,7 @@ public:
 			rankCheck += rankVector;
 
 		}
-		cout << "\033[1;32mPATH CLEAR!\033[0m" << endl;
+		//cout << "\033[1;32mPATH CLEAR!\033[0m" << endl;
 
 		return true;
 	}
@@ -338,9 +362,9 @@ public:
 		int fileDif = file-src->getFile();
 		int rankDif = rank-src->getRank();
 
-		cout << "file) dst - src: " << file << " - " << src->getFile() << endl;
-		cout << "rank) dst - src: " << rank << " - " << src->getRank() << endl; 
-		cout << "fileDif: " << fileDif << ", rankDif: " << rankDif << endl;
+		// cout << "file) dst - src: " << file << " - " << src->getFile() << endl;
+		// cout << "rank) dst - src: " << rank << " - " << src->getRank() << endl; 
+		// cout << "fileDif: " << fileDif << ", rankDif: " << rankDif << endl;
 
 		for (auto rule: rules){
 			if (validFile(rule.fileRule ,fileDif) && validRank(rule.rankRule, rankDif) ){
@@ -426,6 +450,70 @@ public:
 
 	}
 
+	bool checkMate(){
+
+		Piece* king;
+		Piece* current;
+
+
+		if (whites_turn){ king = blackKing; }
+		else { king = whiteKing; }
+
+
+	}
+
+
+	void isKingChecked(){
+
+		// cout << "is King Checked?" << endl;
+
+		Piece* king;
+		Piece* current;
+
+
+		if (whites_turn){ king = blackKing; }
+		else { king = whiteKing; }
+
+		//cout << "Target: " << *king << endl;
+
+		for (int i = 0; i < 8; i++){
+			for (int j = 0; j < 8; j++){
+
+				//cout << "test: " << i << " " << j << endl;
+			
+				current = board[i][j];
+				if (current != nullptr){
+					//cout <<"Not Null: " << i << " " << j << endl;
+
+
+					if (current->isWhite() == whites_turn){
+						//cout << *current << endl;
+						if (validPlacement_(current, current->getCaptureRules(), king->getFile(), king->getRank())){
+							if (isPathClear(current, king->getFile(), king->getRank())){
+								cout << "Check!" << endl;
+
+
+
+							}
+						}
+						
+						
+
+					// 	if (validPlacement_(current, current->getCaptureRules(), king->getFile(), king->getRank()) &&
+					// 		isPathClear(current, king->getFile(), king->getRank())) {
+					// 		cout << "Check!" << endl; 
+					// 		//return true;
+					// 	}
+					}
+
+				}
+
+
+			}
+		}
+
+		//return false;
+	}
 
 
 
@@ -450,6 +538,10 @@ public:
 
 				if (!src->hasMoved()){ src->setMoved(); }
 
+				isKingChecked();
+
+				changePlayer();
+
 				return true;
 			
 			}
@@ -461,6 +553,9 @@ public:
 				board[src->getFile()][src->getRank()] = nullptr;
 				src->setPlace(file1, rank1);
 				board[file1][rank1] = src;
+
+				isKingChecked();
+				changePlayer();
 
 				return true;
 
@@ -485,6 +580,9 @@ public:
 		}
 
 		else return false;
+
+
+	return false;
 
 
 	}
