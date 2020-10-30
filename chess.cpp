@@ -97,7 +97,7 @@ void play(Gameboard* board){
 				if (parseInput(tokens[0], file0, rank0) && parseInput(tokens[1], file1, rank1)){
 				// This point forward should be part of gameboard
 
-					if (board->tryMove(file0,rank0,file1,rank1)){  //if move valid change player
+					if (board->tryMove_(file0,rank0,file1,rank1)){  //if move valid change player
 						board->changePlayer();  //Board should be changing player....
 					}
 					else { //Move Failed, Need to try again? Loop back to taking input

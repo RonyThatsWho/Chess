@@ -93,104 +93,9 @@ public:
 	vector<moveRule> getRules(){
 		return rules;
 	}
-
-	// bool isPathClear(int file, int rank){
-	// //bool isPathClear(Move move){
-
-	// 	/*
-	// 		Need to determine movement type based on Piece type and Destination
-	// 		Horizontal, Vertical, Diagnal or L-Shape
-
-	// 		input is destination
-
-	// 		Need to have pointer to Board
-
-	// 	*/
-
-	// 	// int file = move.file1;
-	// 	// int rank = move.rank1;
-
-	// 	bool vert;
-	// 	bool hor;
-	// 	std::cout << "isPathClear() Pieces Line 43: " << file-m_file << " " << rank-m_rank << std::endl;
-	// 	std::cout << "\tSource: " << m_file << " // " << m_rank << std::endl;
-	// 	std::cout << "\tDest: " << file << " // " << rank << std::endl;
-
-
-
-
-	// 	int vertDif = file-m_file;
-	// 	int horDif = rank-m_rank;
-
-
-	// 	//Vertical Movement Check
-	// 	if (vertDif){
-	// 		bool vert = true;
-	// 		std::cout << "vert true" << std::endl;
-	// 	}
-
-	// 	//Horizontal Movement Check
-	// 	if (horDif){
-	// 		bool hor = true;
-	// 		std::cout << "hor true" << std::endl;
-	// 	}
-
-	// 	if (vert && hor){ // Diag movement
-	// 		if(vertDif == horDif ){
-	// 			//check positions
-
-	// 		}
-	// 	}
-
-	// 	// 
-	// 	else if (1){
-	// 		cout << " No condition. "  << endl; 
-	// 	}
-
-
-
-	// 	return true;
-
-	// }
-
-
-
-	// bool moveTo( Piece* dst, bool turn){
-	// 	std::cout << "\033[1;32mmove_to(): Piece Line 93\033[0m " << std::endl;
-	// 	if (dst == nullptr){
-	// 		std::cout << "\033[1;36mEmpty Square,Need To Check Path\033[0m" << std::endl;
-			
-	// 		if (isPathClear(m_rank, m_file)){
-	// 		//if (isPathClear(move)){
-
-	// 			cout << "Board Passed in Move Structure" << endl;
-
-	// 			//if true then movePiece.
-	// 			//board points to piece
-	// 			//old board location points to null.
-	// 		}
-
-	// 	}
-	// 	else if (dst->isWhite() != turn){
-	// 		std::cout <<  "\033[1;36mEnemy Piece Check Path \033[0m" << std::endl;
-	// 	}
-	// 	else {
-	// 		std::cout << "\033[1;33mOwn Piece -> Castle Attempt?\033[0m" << std::endl;
-	// 		if ((type == "K") && (dst->type == "R") ){
-	// 			//Need to cast and call castle
-	// 			//return (dynamic_cast<King*>(this))->castle(dst);
-
-
-	// 		}
-	// 		else {
-	// 			std::cout << "\033[1;31mTargeting Own Piece, Cannot Castle\033[0m" << std::endl;
-	// 			return false;
-	// 		}
-	// 	}
-
-	// 	return true;
-
-	// }
+	virtual vector<moveRule> getCaptureRules(){
+		return rules;
+	}
 
 
 };
@@ -225,7 +130,11 @@ public:
 
 		cout << "moved, rules size: " << rules.size() << endl; 
 
-	} 
+	}
+
+	vector<moveRule> getCaptureRules() override {
+		return captureRules;
+	}
 
 
 };

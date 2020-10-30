@@ -12,6 +12,7 @@
 // } Move;
 
 
+
 typedef enum{
 	NW,
 	N,
@@ -243,151 +244,140 @@ public:
 
 
 
-	// 	bool isPathClear(int file, int rank){
-	// //bool isPathClear(Move move){
-
-	// 	/*
-	// 		Need to determine movement type based on Piece type and Destination
-	// 		Horizontal, Vertical, Diagnal or L-Shape
-
-	// 		input is destination
-
-	// 		Need to have pointer to Board
-
-	// 	*/
-
-	// 	// int file = move.file1;
-	// 	// int rank = move.rank1;
-
-	// 	bool vert;
-	// 	bool hor;
-	// 	std::cout << "isPathClear() Pieces Line 43: " << file-m_file << " " << rank-m_rank << std::endl;
-	// 	std::cout << "\tSource: " << m_file << " // " << m_rank << std::endl;
-	// 	std::cout << "\tDest: " << file << " // " << rank << std::endl;
 
 
 
 
-	// 	int vertDif = file-m_file;
-	// 	int horDif = rank-m_rank;
-
-
-	// 	//Vertical Movement Check
-	// 	if (vertDif){
-	// 		bool vert = true;
-	// 		std::cout << "vert true" << std::endl;
-	// 	}
-
-	// 	//Horizontal Movement Check
-	// 	if (horDif){
-	// 		bool hor = true;
-	// 		std::cout << "hor true" << std::endl;
-	// 	}
-
-	// 	if (vert && hor){ // Diag movement
-	// 		if(vertDif == horDif ){
-	// 			//check positions
-
-	// 		}
-	// 	}
-
-	// 	// 
-	// 	else if (1){
-	// 		cout << " No condition. "  << endl; 
-	// 	}
-
-
-
-	// 	return true;
-
-	// }
-
-
-
-bool validFile(int fileMoveset, int file){
-	switch (fileMoveset){
-		case 0:
-			if (file == 0) return true;
-			else return false;
-		case 1:
-			if (abs(file) == 1) return true;
-			else return false;
-		case 2:
-			if (abs(file) == 2) return true;
-			else return false;
-		default:
-			return true;
+	bool validFile(int fileMoveset, int file){
+		switch (fileMoveset){
+			case 0:
+				if (file == 0) return true;
+				else return false;
+			case 1:
+				if (abs(file) == 1) return true;
+				else return false;
+			case 2:
+				if (abs(file) == 2) return true;
+				else return false;
+			default:
+				return true;
+		}
 	}
-}
 
-bool validRank(int rankMoveset, int rank){
-	if (!whites_turn) { rank = -rank;}
+	bool validRank(int rankMoveset, int rank){
+		if (!whites_turn) { rank = -rank;}
 
-	switch (rankMoveset){
-		case -2:
-			if (abs(rank) == 2) return true;
-			else return false;
+		switch (rankMoveset){
+			case -2:
+				if (abs(rank) == 2) return true;
+				else return false;
 
-		case -1:
-			if (abs(rank) == 1) return true;
-			else return false;
+			case -1:
+				if (abs(rank) == 1) return true;
+				else return false;
 
-		case 0:
-			if (rank == 0) return true;
-			else return false;
+			case 0:
+				if (rank == 0) return true;
+				else return false;
 
-		case 1:
-			if (abs(rank) == 1) return true;
-			else return false;
+			case 1:
+				if (rank == 1) return true;
+				else return false;
 
-		case 2:
-			if (rank == 2) return true;
-			else return false;
+			case 2:
+				if (rank == 2) return true;
+				else return false;
 
-		default:
-			return true;
+			default:
+				return true;
+		}
 	}
-}
 
 
 
 
-bool validPlacement (Piece* src, int file, int rank){ 
+	bool validPlacement (Piece* src, int file, int rank){ 
 
-	int fileDif = file-src->getFile();
-	int rankDif = rank-src->getRank();
+		int fileDif = file-src->getFile();
+		int rankDif = rank-src->getRank();
 
-	cout << "file) dst - src: " << file << " - " << src->getFile() << endl;
-	cout << "rank) dst - src: " << rank << " - " << src->getRank() << endl; 
-	cout << "fileDif: " << fileDif << ", rankDif: " << rankDif << endl;
+		cout << "file) dst - src: " << file << " - " << src->getFile() << endl;
+		cout << "rank) dst - src: " << rank << " - " << src->getRank() << endl; 
+		cout << "fileDif: " << fileDif << ", rankDif: " << rankDif << endl;
 
-	for (auto rule: src->getRules()){
-		if (validFile(rule.fileRule ,fileDif) && validRank(rule.rankRule, rankDif) ){
+		for (auto rule: src->getRules()){
+			if (validFile(rule.fileRule ,fileDif) && validRank(rule.rankRule, rankDif) ){
 
-			switch(rule.diagRule){
-				case 0:
-					if (fileDif == 0 || rankDif == 0) return true;
-					break;
+				switch(rule.diagRule){
+					case 0:
+						if (fileDif == 0 || rankDif == 0) return true;
+						break;
 
-				case 1:
-					if ( abs(fileDif)  == abs(rankDif) ) return true;
-					break;
+					case 1:
+						if ( abs(fileDif)  == abs(rankDif) ) return true;
+						break;
 
-				case 2:
-					return true;
-				default:
-					return true;
+					case 2:
+						return true;
+					default:
+						return true;
+
+				}
+
+			}
+
+
+
+		}
+		return false;	
+
+	}
+
+	bool validPlacement_ (Piece* src, vector<moveRule> rules, int file, int rank){ 
+
+		int fileDif = file-src->getFile();
+		int rankDif = rank-src->getRank();
+
+		cout << "file) dst - src: " << file << " - " << src->getFile() << endl;
+		cout << "rank) dst - src: " << rank << " - " << src->getRank() << endl; 
+		cout << "fileDif: " << fileDif << ", rankDif: " << rankDif << endl;
+
+		for (auto rule: rules){
+			if (validFile(rule.fileRule ,fileDif) && validRank(rule.rankRule, rankDif) ){
+
+				switch(rule.diagRule){
+					case 0:
+						if (fileDif == 0 || rankDif == 0) return true;
+						break;
+
+					case 1:
+						if ( abs(fileDif)  == abs(rankDif) ) return true;
+						break;
+
+					case 2:
+						return true;
+
+					default:
+						return true;
+
+				}
 
 			}
 
 		}
 
-
+		return false;	
 
 	}
-	return false;	
 
-}
+
+
+	void capturePiece(Piece* src, int file, int rank ){
+
+	}
+
+
+
 
 
 	bool moveTo(Piece* src, int file, int rank){
@@ -409,21 +399,10 @@ bool validPlacement (Piece* src, int file, int rank){
 			return true;
 
 
-
-			
-			// if (isPathClear(m_rank, m_file)){
-			// //if (isPathClear(move)){
-
-			// 	cout << "Board Passed in Move Structure" << endl;
-
-			// 	//if true then movePiece.
-			// 	//board points to piece
-			// 	//old board location points to null.
-			// }
-
 		}
 		else if (dst->isWhite() != whites_turn){
 			std::cout <<  "\033[1;36mEnemy Piece \033[0m" << std::endl;
+
 
 
 
@@ -446,6 +425,70 @@ bool validPlacement (Piece* src, int file, int rank){
 		return true;
 
 	}
+
+
+
+
+	bool tryMove_(int file0, int rank0, int file1, int rank1){
+
+		Piece* src = board[file0][rank0];
+		if (src == nullptr){ return false; }
+
+		if (src->isWhite() == whites_turn){	 // Piece Owner
+
+			Piece* dst = board[file1][rank1];
+
+			if (dst == nullptr){ // Empty Landing Space
+
+
+				if (!validPlacement_(src, src->getRules(), file1, rank1)) { return false; }
+				if (!isPathClear(src, file1, rank1) ) { return false; }
+
+				board[src->getFile()][src->getRank()] = nullptr;
+				src->setPlace(file1, rank1);
+				board[file1][rank1] = src;
+
+				if (!src->hasMoved()){ src->setMoved(); }
+
+				return true;
+			
+			}
+			else if (dst->isWhite() != whites_turn){ // Enemy on Land Space
+
+				if (!validPlacement_(src, src->getCaptureRules(), file1, rank1)) { return false; }
+				if (!isPathClear(src, file1, rank1) ) { return false; }
+
+				board[src->getFile()][src->getRank()] = nullptr;
+				src->setPlace(file1, rank1);
+				board[file1][rank1] = src;
+
+				return true;
+
+			}
+			
+			else { // Own Piece - Change this for Castling
+
+				std::cout << "\033[1;33mOwn Piece -> Castle Attempt?\033[0m" << std::endl;
+				if ((src->getType() == "K") && (dst->getType() == "R") ){
+					//Need to cast and call castle
+					//return (dynamic_cast<King*>(this))->castle(dst);
+
+
+				}
+				else {
+					std::cout << "\033[1;31mTargeting Own Piece, Cannot Castle\033[0m" << std::endl;
+					return false;
+				}
+			}
+
+
+		}
+
+		else return false;
+
+
+	}
+
 
 
 	bool tryMove(int file0, int rank0, int file1, int rank1){
@@ -524,3 +567,66 @@ bool validPlacement (Piece* src, int file, int rank){
 
 
 };
+
+
+
+
+
+	// 	bool isPathClear(int file, int rank){
+	// //bool isPathClear(Move move){
+
+	// 	/*
+	// 		Need to determine movement type based on Piece type and Destination
+	// 		Horizontal, Vertical, Diagnal or L-Shape
+
+	// 		input is destination
+
+	// 		Need to have pointer to Board
+
+	// 	*/
+
+	// 	// int file = move.file1;
+	// 	// int rank = move.rank1;
+
+	// 	bool vert;
+	// 	bool hor;
+	// 	std::cout << "isPathClear() Pieces Line 43: " << file-m_file << " " << rank-m_rank << std::endl;
+	// 	std::cout << "\tSource: " << m_file << " // " << m_rank << std::endl;
+	// 	std::cout << "\tDest: " << file << " // " << rank << std::endl;
+
+
+
+
+	// 	int vertDif = file-m_file;
+	// 	int horDif = rank-m_rank;
+
+
+	// 	//Vertical Movement Check
+	// 	if (vertDif){
+	// 		bool vert = true;
+	// 		std::cout << "vert true" << std::endl;
+	// 	}
+
+	// 	//Horizontal Movement Check
+	// 	if (horDif){
+	// 		bool hor = true;
+	// 		std::cout << "hor true" << std::endl;
+	// 	}
+
+	// 	if (vert && hor){ // Diag movement
+	// 		if(vertDif == horDif ){
+	// 			//check positions
+
+	// 		}
+	// 	}
+
+	// 	// 
+	// 	else if (1){
+	// 		cout << " No condition. "  << endl; 
+	// 	}
+
+
+
+	// 	return true;
+
+	// }
