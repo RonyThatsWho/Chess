@@ -17,11 +17,16 @@ struct moveRule{
 
 };
 
-struct move{
-	int file;
-	int rank;
-};
-
+// struct move{
+// 	int file;
+// 	int rank;
+// };
+// class Pawn;
+// class Rook;
+// class King;
+// class Queen;
+// class Knight;
+// class Bishop;
 
 class Piece {
 
@@ -70,8 +75,9 @@ public:
 
 	friend ostream & operator << (ostream &out, const Piece &piece);
 
+	
 	void setName (){
-		if (m_isWhite){	name = "\033[1;37mw" + type + "\033[0m"; }
+		if (m_isWhite){	name = "\033[1;36mw" + type + "\033[0m"; }
 		else { name =  "\033[1;34mb" + type + "\033[0m"; }
 	}
 
@@ -96,6 +102,8 @@ public:
 	virtual vector<moveRule> getCaptureRules(){
 		return rules;
 	}
+
+	friend Piece* pieceClone(Piece*);
 
 
 };
@@ -230,6 +238,46 @@ public:
 	};
 
 };
+
+
+Piece* pieceClone(Piece* src){
+	Piece* copy;
+	auto test = src->getType();
+
+	switch (test[0]){
+
+		
+
+		case 'p':
+			copy = new Pawn (src->isWhite(), src->getFile(), src->getRank());
+			break;
+		case 'K':
+			copy = new King (src->isWhite(), src->getFile(), src->getRank());
+			break;
+		case 'Q':
+			copy = new Queen (src->isWhite(), src->getFile(), src->getRank()); 
+			break;
+		case 'R':
+			copy = new Rook (src->isWhite(), src->getFile(), src->getRank()); 
+			break;
+		case 'N':
+			copy = new Knight (src->isWhite(), src->getFile(), src->getRank());
+			break;
+		case 'B':
+			copy = new Bishop (src->isWhite(), src->getFile(), src->getRank());
+			break;
+
+	}
+
+
+	copy->m_hasMoved = src->hasMoved();
+
+	copy->rules = src->rules;
+	copy->captureRules = src->captureRules; 
+
+	return copy;
+}
+
 
 
 #endif

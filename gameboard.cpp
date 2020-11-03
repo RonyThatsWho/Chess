@@ -3,13 +3,14 @@
 #define white true
 #define	black false
 
-// typedef struct move{
-// 	int file0;
-// 	int rank0;
-// 	int file1;
-// 	int rank1;
+typedef struct move{
+	Piece* src;
+	Piece* dst;
 
-// } Move;
+	int file;
+	int rank;
+
+} Move;
 
 
 
@@ -35,8 +36,12 @@ class Gameboard {
 	bool isWhiteWinner;
 	bool draw;
 
+	Move lastMove;
+
+
 	Piece* whiteKing;
 	Piece* blackKing;
+
 
 
 
@@ -98,6 +103,30 @@ public:
 
 	}
 
+	void undoMove(){
+
+		board[lastMove.src->getFile()][lastMove.src->getRank()] = lastMove.src;
+		board[lastMove.file][lastMove.rank] = lastMove.dst;
+
+
+	}
+
+	void saveState(Piece* src, Piece* dst, int file, int rank){
+
+		lastMove.src = pieceClone (src);
+		if (dst == nullptr){
+			lastMove.dst = nullptr;
+		}
+		else {
+			lastMove.dst = pieceClone(dst);
+		}
+
+		lastMove.file = file;
+		lastMove.rank = rank;
+
+
+	}
+
 	void printSquare(int i, int j){
 		if (board[i][j] != nullptr){
 			cout << *(board[i][j]);
@@ -128,7 +157,7 @@ public:
 			cout << *(board[i][j]);
 		}
 		else if ((i+j)%2 == 0 ){
-			cout << "##";
+			cout << "\033[;90m##\033[0m";
 		}
 		else cout << "  ";
 	}
@@ -157,12 +186,12 @@ public:
 
 
 	void printBoard__() {
-		string line = "\t+-----+-----+-----+-----+-----+-----+-----+-----+\n";
-		cout << endl <<"\t   a     b     c     d     e     f     g     h" << endl;
+		string line = "   +-----+-----+-----+-----+-----+-----+-----+-----+\n";
+		cout << endl <<"      a     b     c     d     e     f     g     h" << endl;
 		cout << line;
 		for (int j = 7; j > -1; j--){
 			cout << j+1;
-			cout << "\t|  ";
+			cout << "  |  ";
 			for (int i = 0; i < 8; i++){
 
 				printSquare_(i,j);
@@ -174,13 +203,16 @@ public:
 			cout << j+1 << endl;
 			cout << line;
 		}
-		cout << "\t   a     b     c     d     e     f     g     h" << endl << endl;
+		cout << "      a     b     c     d     e     f     g     h" << endl << endl;
 
 	}
 
 	void changePlayer() { 
 		whites_turn = !whites_turn;
 		turn++;
+
+
+		isKingChecked();
 
 		printBoard__();
 
@@ -460,10 +492,11 @@ public:
 		else { king = whiteKing; }
 
 
+		return false;
 	}
 
 
-	void isKingChecked(){
+	bool isKingChecked(){
 
 		// cout << "is King Checked?" << endl;
 
@@ -471,8 +504,8 @@ public:
 		Piece* current;
 
 
-		if (whites_turn){ king = blackKing; }
-		else { king = whiteKing; }
+		if (whites_turn){ king = whiteKing; }
+		else { king = blackKing; }
 
 		//cout << "Target: " << *king << endl;
 
@@ -486,11 +519,17 @@ public:
 					//cout <<"Not Null: " << i << " " << j << endl;
 
 
-					if (current->isWhite() == whites_turn){
+					if (current->isWhite() != whites_turn){
 						//cout << *current << endl;
 						if (validPlacement_(current, current->getCaptureRules(), king->getFile(), king->getRank())){
 							if (isPathClear(current, king->getFile(), king->getRank())){
-								cout << "Check!" << endl;
+								if (whites_turn){
+									cout << "White is Checked!" << endl;
+								}
+								else {
+									cout << "Black is Checked!" << endl;
+								}
+								return true;
 
 
 
@@ -511,6 +550,7 @@ public:
 
 			}
 		}
+		return false;
 
 		//return false;
 	}
@@ -532,13 +572,22 @@ public:
 				if (!validPlacement_(src, src->getRules(), file1, rank1)) { return false; }
 				if (!isPathClear(src, file1, rank1) ) { return false; }
 
+				saveState(src, dst, file1, rank1);
+
+
 				board[src->getFile()][src->getRank()] = nullptr;
 				src->setPlace(file1, rank1);
 				board[file1][rank1] = src;
 
 				if (!src->hasMoved()){ src->setMoved(); }
 
-				isKingChecked();
+				//Did the move, the player just made cause them to get checked?
+
+				if (isKingChecked()){
+					undoMove();
+					return false;
+
+				}
 
 				changePlayer();
 
