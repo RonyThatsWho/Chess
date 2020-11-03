@@ -108,6 +108,27 @@ public:
 		board[lastMove.src->getFile()][lastMove.src->getRank()] = lastMove.src;
 		board[lastMove.file][lastMove.rank] = lastMove.dst;
 
+		if (lastMove.src->getType()[0] == 'K'){
+			if (lastMove.src->isWhite()){
+				whiteKing = lastMove.src;
+			}
+			else{
+				blackKing = lastMove.src;
+			}
+		}
+
+		if(lastMove.dst != nullptr){
+			if (lastMove.dst->getType()[0] == 'K'){
+				if (lastMove.dst->isWhite()){
+					whiteKing = lastMove.src;
+				}
+				else{
+					blackKing = lastMove.src;
+				}
+			}
+		}
+
+
 
 	}
 
@@ -123,6 +144,7 @@ public:
 
 		lastMove.file = file;
 		lastMove.rank = rank;
+
 
 
 	}
@@ -212,7 +234,9 @@ public:
 		turn++;
 
 
-		isKingChecked();
+		if (isKingChecked()){
+			checkMate();
+		}
 
 		printBoard__();
 
@@ -484,15 +508,57 @@ public:
 
 	bool checkMate(){
 
-		Piece* king;
+		// Piece* king;
 		Piece* current;
 
 
-		if (whites_turn){ king = blackKing; }
-		else { king = whiteKing; }
+		// if (whites_turn){ king = whiteKing; }
+		// else { king = blackKing; }
+		for (int i = 0; i < 8; i++){
+			for (int j = 0; j < 8; j++){
+
+				current = board[i][j];
+				if (current != nullptr){
+					if (current->isWhite() == whites_turn){
 
 
-		return false;
+						for (int k = 0; k < 8; k++){
+							for (int l = 0; l < 8; l++){
+
+
+
+								saveState(current, board[j][k], j, k);
+
+								if (tryMove_(i,j,k,l)){
+									undoMove();		
+									return false;
+									
+								}
+								undoMove();
+
+
+
+
+
+
+							}
+						}
+
+
+
+
+					}
+				}
+
+
+
+
+
+			}
+		}
+
+		cout << "CHECKMATE!!" << endl;
+		return true;
 	}
 
 
