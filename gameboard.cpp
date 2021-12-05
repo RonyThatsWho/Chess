@@ -1,4 +1,5 @@
 #include "pieces.cpp"
+#include <stack>
 
 #define white true
 #define	black false
@@ -37,13 +38,11 @@ class Gameboard {
 	bool draw;
 
 	Move lastMove;
+	stack<Move> moves;
 
 
 	Piece* whiteKing;
 	Piece* blackKing;
-
-
-
 
 
 public:
@@ -97,18 +96,66 @@ public:
 
 		blackKing = board[4][7];
 		whiteKing = board[4][0];
+
+		//cout << blackKing << endl;
+		//cout << board[4][7] << endl;
 		//TESTING
 		// board[2][1] = new Queen(white, 2, 1);
 		// board[5][4] = new Queen(black, 5, 4);
 
 	}
+	int getTurn(){
+		return turn;
+	}
 
 	void undoMove(){
+		//cout << "UNDOMOVE()" << endl;
+
+
+		Move m = moves.top();
+
+		board[m.src->getFile()][m.src->getRank()] = m.src;
+		board[m.file][m.rank] = m.dst;
+
+
+
+		if (m.src->getType()[0] == 'K'){
+			//cout << "update King location (undo move)" << endl;
+			if (m.src->isWhite()){
+				whiteKing = board[m.src->getFile()][m.src->getRank()];
+			}
+			else{
+				blackKing = board[m.src->getFile()][m.src->getRank()];
+			}
+		}
+
+		if(m.dst != nullptr){
+			if (m.dst->getType()[0] == 'K'){
+				//cout << "update King location (undo move)" << endl;
+				if (m.dst->isWhite()){
+					whiteKing = board[m.file][m.rank];
+				}
+				else{
+					blackKing = board[m.file][m.rank];
+				}
+			}
+		}
+
+
+
+		//cout << "White King (" << whiteKing->getFile() << ", " << whiteKing->getRank() << ")" << endl;
+		//cout << "Black King (" << blackKing->getFile() << ", " << blackKing->getRank() << ")" << endl;
+		moves.pop();
+	}
+
+	void undoMove_(){
+
 
 		board[lastMove.src->getFile()][lastMove.src->getRank()] = lastMove.src;
 		board[lastMove.file][lastMove.rank] = lastMove.dst;
 
 		if (lastMove.src->getType()[0] == 'K'){
+			
 			if (lastMove.src->isWhite()){
 				whiteKing = lastMove.src;
 			}
@@ -127,12 +174,33 @@ public:
 				}
 			}
 		}
+	}
 
+
+	void saveState(Piece* src, Piece* dst, int file, int rank){
+		//cout << "saveState()" << endl;
+
+		Move m;
+		m.src = pieceClone(src);
+
+		if (dst == nullptr){
+			m.dst = nullptr;
+		}
+		else {
+			m.dst = pieceClone(dst);
+		}
+		m.file = file;
+		m.rank = rank;
+
+		moves.push(m);
+
+		//cout << "White King (" << whiteKing->getFile() << ", " << whiteKing->getRank() << ")" << endl;
+		//cout << "Black King (" << blackKing->getFile() << ", " << blackKing->getRank() << ")" << endl;
 
 
 	}
 
-	void saveState(Piece* src, Piece* dst, int file, int rank){
+	void saveState_(Piece* src, Piece* dst, int file, int rank){
 
 		lastMove.src = pieceClone (src);
 		if (dst == nullptr){
@@ -147,6 +215,14 @@ public:
 
 
 
+	}
+	void printKings(){
+		cout << "White King " << whiteKing << " (" << whiteKing->getFile() << ", " << whiteKing->getRank() << ") " << endl;
+		cout << "Black King " << blackKing << " (" << blackKing->getFile() << ", " << blackKing->getRank() << ") " << endl;
+	}
+
+	void printPosition (int i, int j){
+		cout << (char)('a'+i) << j+1;
 	}
 
 	void printSquare(int i, int j){
@@ -235,7 +311,9 @@ public:
 
 
 		if (isKingChecked()){
-			checkMate();
+			if(checkMate()){
+				resign();
+			}
 		}
 
 		printBoard__();
@@ -308,9 +386,9 @@ public:
 		while ((fileCheck != file) || (rankCheck != rank) ){
 			// cout << "check path .... " << fileCheck << "  " << rankCheck << endl;
 			if (board[fileCheck][rankCheck] != nullptr){
-				cout << "square: "<< fileCheck <<"  " << rankCheck << " not NULL piece: ";
-				printSquare(fileCheck,rankCheck);
-				cout << endl;
+				//cout << "square: ("<< fileCheck <<",  " << rankCheck << ") not NULL piece: ";
+				//printSquare(fileCheck,rankCheck);
+				//cout << endl;
 				return false;
 			}
 			fileCheck += fileVector;
@@ -508,6 +586,10 @@ public:
 
 	bool checkMate(){
 
+		//cout << "CHECKMATE() Called " << endl;
+		//cout << whiteKing->getFile() << ", " << whiteKing->getRank() << endl;
+		//cout << "turn: " << whites_turn << endl << endl;
+
 		// Piece* king;
 		Piece* current;
 
@@ -524,15 +606,18 @@ public:
 
 						for (int k = 0; k < 8; k++){
 							for (int l = 0; l < 8; l++){
+								//cout << " (i: " << i << ", j: " << j << ") -->  (k: " << k << ", l: " << l << ") " << endl; 
 
 
 
-								saveState(current, board[j][k], j, k);
+								saveState(current, board[k][l], k, l);
 
 								if (tryMove_(i,j,k,l)){
+									//cout << "VALID MOVE FOUND! " << *current << "  (" << i << ", " << j << ") --> (" << k << ", " << l << ")" <<endl;
+
 									undoMove();		
 									return false;
-									
+
 								}
 								undoMove();
 
@@ -564,7 +649,7 @@ public:
 
 	bool isKingChecked(){
 
-		// cout << "is King Checked?" << endl;
+		//cout << "is King Checked?" << endl;
 
 		Piece* king;
 		Piece* current;
@@ -573,7 +658,7 @@ public:
 		if (whites_turn){ king = whiteKing; }
 		else { king = blackKing; }
 
-		//cout << "Target: " << *king << endl;
+		//cout << "Target: " << *king << " (" << king->getFile() << " " << king->getRank() << ")" << endl;
 
 		for (int i = 0; i < 8; i++){
 			for (int j = 0; j < 8; j++){
@@ -586,7 +671,7 @@ public:
 
 
 					if (current->isWhite() != whites_turn){
-						//cout << *current << endl;
+						//cout << *current << " (" << i << ", " << j << ") "; printPosition(i,j); cout << endl;
 						if (validPlacement_(current, current->getCaptureRules(), king->getFile(), king->getRank())){
 							if (isPathClear(current, king->getFile(), king->getRank())){
 								if (whites_turn){
@@ -634,6 +719,8 @@ public:
 
 			if (dst == nullptr){ // Empty Landing Space
 
+				//Check if pawn attempting en-passant 
+
 
 				if (!validPlacement_(src, src->getRules(), file1, rank1)) { return false; }
 				if (!isPathClear(src, file1, rank1) ) { return false; }
@@ -648,14 +735,19 @@ public:
 				if (!src->hasMoved()){ src->setMoved(); }
 
 				//Did the move, the player just made cause them to get checked?
+				// if ( (file0 == 0) && (rank0 == 1) && (file1 == 0) && (rank1 == 2 ) ){
+				// 	cout << " SUSPECT: King Checked? -> " << isKingChecked() << endl; 
+
+				// }
 
 				if (isKingChecked()){
+
+					//cout << "King Checked!, UNDO!" << endl;
 					undoMove();
 					return false;
-
 				}
 
-				changePlayer();
+				//changePlayer();
 
 				return true;
 			
@@ -665,12 +757,19 @@ public:
 				if (!validPlacement_(src, src->getCaptureRules(), file1, rank1)) { return false; }
 				if (!isPathClear(src, file1, rank1) ) { return false; }
 
+				saveState(src, dst, file1, rank1);
+
 				board[src->getFile()][src->getRank()] = nullptr;
 				src->setPlace(file1, rank1);
 				board[file1][rank1] = src;
 
-				isKingChecked();
-				changePlayer();
+				if(isKingChecked()){
+
+					//cout << "King Checked!, UNDO!" << endl;
+					undoMove();
+					return false;
+				}
+				//changePlayer();
 
 				return true;
 
@@ -678,7 +777,7 @@ public:
 			
 			else { // Own Piece - Change this for Castling
 
-				std::cout << "\033[1;33mOwn Piece -> Castle Attempt?\033[0m" << std::endl;
+				//std::cout << "\033[1;33mOwn Piece -> Castle Attempt?\033[0m" << std::endl;
 				if ((src->getType() == "K") && (dst->getType() == "R") ){
 					//Need to cast and call castle
 					//return (dynamic_cast<King*>(this))->castle(dst);
@@ -686,7 +785,7 @@ public:
 
 				}
 				else {
-					std::cout << "\033[1;31mTargeting Own Piece, Cannot Castle\033[0m" << std::endl;
+					std::cout << "\033[1;31mInvalid Move. Targeting Own Piece.\033[0m" << std::endl;
 					return false;
 				}
 			}

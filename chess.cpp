@@ -90,15 +90,13 @@ void play(Gameboard* board){
 			if( (tokens[0].length() == 2) && (tokens[0].length() == 2 && (tokens[0] != tokens[1])) ){
 				//cout << "\033[;32mValid Length, Parsing Input... \033[0m" << endl;
 				
-
 				int file0, rank0, file1, rank1;
-
 
 				if (parseInput(tokens[0], file0, rank0) && parseInput(tokens[1], file1, rank1)){
 				// This point forward should be part of gameboard
 
 					if (board->tryMove_(file0,rank0,file1,rank1)){  //if move valid change player
-						//board->changePlayer();  //Board should be changing player....
+						board->changePlayer();  //Board should be changing player....
 					}
 					else { //Move Failed, Need to try again? Loop back to taking input
 
@@ -126,7 +124,7 @@ void play(Gameboard* board){
 				int rank;
 				int file;
 				parseInput(tokens[1], file, rank);
-				std::cout << file << " // " << rank << std::endl;
+				std::cout << "(" << file << ", " << rank << ")" << std::endl;
 
 				
 			}	
@@ -160,10 +158,31 @@ void play(Gameboard* board){
 		}
 
 
-		//Player has quit
+		
 		else if(tokens.size() == 1){
+
+			//Player has quit
 			if (tokens[0] == "resign") {
 				board->resign();
+			}
+
+			else if (tokens[0] == "kings"){
+				board->printKings();
+			}
+
+			//sim to Check-Mate
+			else if (board->getTurn() == 0 && tokens[0] == "cm"){
+				board->tryMove_(5, 1, 5, 2);
+				board->changePlayer();
+
+				board->tryMove_(4, 6, 4, 5);
+				board->changePlayer();
+
+				board->tryMove_(6, 1, 6, 3);
+				board->changePlayer();
+
+				board->tryMove_(3, 7, 7, 3);
+				board->changePlayer();
 			}
 
 		}
